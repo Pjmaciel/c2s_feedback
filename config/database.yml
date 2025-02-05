@@ -9,15 +9,15 @@ default: &default
 
 development:
   <<: *default
-  database: ditotasker_development
+  database: c2s_feedback_development
 
 test:
   <<: *default
-  database: ditotasker_test
+  database: c2s_feedback_test
 
 production:
   <<: *default
-  database: ditotasker_production
+  database: c2s_feedback_production
   username: <%= ENV['PROD_POSTGRES_USER'] %>
   password: <%= ENV['PROD_POSTGRES_PASSWD'] %>
   host: <%= ENV['PROD_POSTGRES_HOST'] || 'localhost' %>
