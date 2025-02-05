@@ -1,0 +1,9 @@
+:concurrency: 5
+:queues:
+  - default
+  - mailers
+  - low
+  - high
+
+:redis:
+  url: <%= ENV["REDIS_URL"] %>
