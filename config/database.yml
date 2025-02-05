@@ -18,7 +18,7 @@ test:
 production:
   <<: *default
   database: c2s_feedback_production
-  username: <%= ENV['PROD_POSTGRES_USER'] %>
-  password: <%= ENV['PROD_POSTGRES_PASSWD'] %>
+  username: <%= ENV['PROD_POSTGRES_USER'] || 'postgres'%>
+  password: <%= ENV['PROD_POSTGRES_PASSWD'] || 'postgres'%>
   host: <%= ENV['PROD_POSTGRES_HOST'] || 'localhost' %>
   port: <%= ENV['PROD_POSTGRES_PORT'] || '5432' %>

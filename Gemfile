@@ -39,8 +39,7 @@ gem 'brakeman', require: false # Static code analysis for vulnerabilities
 gem 'rack-attack' # API rate limiting & abuse protection
 
 # --- Monitoring & Logging ---
-gem 'ahoy_matey'          # Request tracking & analytics
-gem 'lograge'             # Optimized log formatting
+gem 'lograge' # Optimized log formatting
 
 # Use JavaScript with ESM import maps [https://github.com/rails/importmap-rails]
 gem 'importmap-rails'
@@ -86,4 +85,4 @@ group :test do
   gem 'selenium-webdriver' # UI testing with Selenium
 end
 
-gem "dockerfile-rails", ">= 1.7", :group => :development
+gem 'dockerfile-rails', '>= 1.7', group: :development

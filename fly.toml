@@ -1,9 +1,9 @@
-# fly.toml app configuration file generated for ditotasker on 2025-02-03T18:50:22-03:00
+# fly.toml app configuration file generated for c2s_feedback on 2025-02-03T18:50:22-03:00
 #
 # See https://fly.io/docs/reference/configuration/ for information about how to use this file.
 #
 
-app = 'ditotasker'
+app = 'c2s_feedback'
 primary_region = 'gig'
 console_command = '/rails/bin/rails console'
 
