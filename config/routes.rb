@@ -3,8 +3,11 @@
 require 'sidekiq/web'
 
 Rails.application.routes.draw do
+  get 'redoc/index'
   mount Rswag::Ui::Engine => '/swagger'
   mount Rswag::Api::Engine => '/api-docs'
+
+  get '/redoc' => 'redoc#index'
 
   namespace :api do
     namespace :v1 do

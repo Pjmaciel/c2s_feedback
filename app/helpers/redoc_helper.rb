@@ -1,0 +1,2 @@
+module RedocHelper
+end
