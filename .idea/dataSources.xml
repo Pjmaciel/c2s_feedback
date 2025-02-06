@@ -8,5 +8,12 @@
       <jdbc-url>jdbc:postgresql://localhost:5432/ditotasker_test</jdbc-url>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
+    <data-source source="LOCAL" name="c2s_feedback@localhost" uuid="b608f49c-7a0c-45fb-ac5b-2fd6ead545f7">
+      <driver-ref>postgresql</driver-ref>
+      <synchronize>true</synchronize>
+      <jdbc-driver>org.postgresql.Driver</jdbc-driver>
+      <jdbc-url>jdbc:postgresql://localhost:5432/c2s_feedback_production</jdbc-url>
+      <working-dir>$ProjectFileDir$</working-dir>
+    </data-source>
   </component>
 </project>
