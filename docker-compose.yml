@@ -87,6 +87,7 @@ services:
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/c2s_feedback_development"
     volumes:
       - .:/app
+      - ~/.ssh:/root/.ssh
     working_dir: /app
     ports:
       - "3000:3000"
