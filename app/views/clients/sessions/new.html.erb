@@ -4,8 +4,8 @@
   <%= render "devise/shared/error_messages", resource: resource %>
 
   <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+    <%= f.label :cpf, "CPF" %><br />
+    <%= f.text_field :cpf, autofocus: true, value: params.dig(:user, :client_profile_attributes, :cpf) %>
   </div>
 
   <div class="field">

@@ -28,4 +28,16 @@ class User < ApplicationRecord
     end
   end
 
+  # Método para autenticar com base no CPF ou número de registro
+  def self.find_for_database_authentication(warden_conditions)
+    conditions = warden_conditions.dup
+    if (cpf = conditions.delete(:cpf))
+      joins(:client_profile).find_by(client_profiles: { cpf: cpf })
+    elsif (registration_number = conditions.delete(:registration_number))
+      joins(:attendant_profile).find_by(attendant_profiles: { registration_number: registration_number })
+    else
+      where(conditions.to_h).first
+    end
+  end
+
 end
