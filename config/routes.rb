@@ -9,6 +9,27 @@ Rails.application.routes.draw do
   #autentication
   devise_for :users
 
+  # Rotas personalizadas para clientes
+  devise_scope :user do
+    # Rotas de login para clientes
+    get 'clients/sign_in', to: 'clients/sessions#new', as: :new_client_session
+    post 'clients/sign_in', to: 'clients/sessions#create', as: :client_session
+
+    # Rotas de login para funcionários
+    get 'employees/sign_in', to: 'employees/sessions#new', as: :new_employee_session
+    post 'employees/sign_in', to: 'employees/sessions#create', as: :employee_session
+
+    # Rotas de registro para clientes
+    get 'clients/sign_up', to: 'clients/registrations#new', as: :new_client_registration
+    post 'clients', to: 'clients/registrations#create', as: :client_registration
+
+    # Rotas de registro para funcionários
+    get 'employees/sign_up', to: 'employees/registrations#new', as: :new_employee_registration
+    post 'employees', to: 'employees/registrations#create', as: :employee_registration
+
+  end
+
+
   #  principal
   root to: 'pages#home'
 
