@@ -9,14 +9,27 @@ class Employees::RegistrationsController < Devise::RegistrationsController
   end
 
   def create
-    super do |resource|
-      # Define o papel do usuário com base na matrícula
-      if params[:user][:attendant_profile_attributes][:registration_number].start_with?('V')
-        resource.role = 'attendant'
-      elsif params[:user][:attendant_profile_attributes][:registration_number].start_with?('G')
-        resource.role = 'manager'
-      end
-      resource.save
+    # Define o papel do usuário com base na matrícula
+    registration_number = params[:user][:attendant_profile_attributes][:registration_number]
+    role = if registration_number.start_with?('V')
+             'attendant'
+           elsif registration_number.start_with?('G')
+             'manager'
+           else
+             'attendant' # Fallback padrão (opcional)
+           end
+
+    # Cria o usuário com o papel definido
+    self.resource = User.new(sign_up_params)
+    resource.role = role
+
+    if resource.save
+      sign_in(resource)
+      redirect_to after_sign_in_path_for(resource), notice: 'Cadastro realizado com sucesso!'
+    else
+      clean_up_passwords(resource)
+      set_minimum_password_length
+      respond_with resource
     end
   end
 

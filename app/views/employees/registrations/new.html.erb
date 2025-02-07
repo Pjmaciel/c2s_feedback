@@ -6,7 +6,8 @@
   <%= f.fields_for :attendant_profile do |profile_fields| %>
     <div class="field">
       <%= profile_fields.label :registration_number, "Número de Registro" %><br />
-      <%= profile_fields.text_field :registration_number %>
+      <%= profile_fields.text_field :registration_number, pattern: '[VG]\\d{4}',
+                                    title: 'O número de registro deve estar no formato V1234 ou G1234.' %>
     </div>
   <% end %>
 
