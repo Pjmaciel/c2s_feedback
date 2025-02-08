@@ -1,10 +1,11 @@
-class CreateAttendantProfiles < ActiveRecord::Migration[7.1]
+class CreateAttendantProfiles < ActiveRecord::Migration[7.0]
   def change
     create_table :attendant_profiles do |t|
-      t.references :user, null: false, foreign_key: true
-      t.string :registration_number , unique: true
-
+      t.bigint :user_id, null: false
+      t.string :registration_number, null: false
       t.timestamps
     end
+
+    add_index :attendant_profiles, :registration_number, unique: true
   end
 end
