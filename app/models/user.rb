@@ -16,7 +16,7 @@ class User < ApplicationRecord
   # Validação do role
   validates :role, inclusion: { in: %w[client attendant manager] }
 
-  # Método para determinar o tipo de perfil com base no role
+  # determinar o tipo de perfil com base no role
   def profile
     case role
     when 'client'
@@ -28,7 +28,7 @@ class User < ApplicationRecord
     end
   end
 
-  # Método para autenticar com base no CPF ou número de registro
+  # autenticar com base no CPF ou número de registro
   def self.find_for_database_authentication(warden_conditions)
     conditions = warden_conditions.dup
     if (cpf = conditions.delete(:cpf))
