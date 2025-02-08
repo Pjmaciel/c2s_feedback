@@ -1,0 +1,10 @@
+<h1>Olá, <%= @evaluation_request.client.name || "Cliente" %></h1>
+
+<p>Você foi solicitado a avaliar um atendimento.</p>
+
+<p>
+  Para responder à avaliação, clique no link abaixo:
+  <a href="<%= api_v1_evaluation_request_url(@evaluation_request.evaluation_token) %>">Avaliar Atendimento</a>
+</p>
+
+<p>Obrigado!</p>
