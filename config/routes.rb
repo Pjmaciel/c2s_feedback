@@ -51,6 +51,8 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'health/show'
       get '/health', to: 'health#show'
+
+      resources :evaluations
     end
   end
 end
