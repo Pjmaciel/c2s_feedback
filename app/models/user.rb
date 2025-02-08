@@ -13,6 +13,9 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :validatable
 
+  # Constants
+  ROLES = %w[client attendant manager].freeze
+
   # Validação do role
   validates :role, inclusion: { in: %w[client attendant manager] }
 
@@ -38,6 +41,23 @@ class User < ApplicationRecord
     else
       where(conditions.to_h).first
     end
+  end
+
+  # Role check methods
+  def client?
+    role == 'client'
+  end
+
+  def attendant?
+    role == 'attendant'
+  end
+
+  def manager?
+    role == 'manager'
+  end
+
+  def super_admin?
+    manager? && id == 1 # O primeiro manager criado é considerado super_admin
   end
 
 end
