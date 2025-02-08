@@ -1,0 +1,25 @@
+<table class="table table-striped">
+  <thead>
+  <tr>
+    <th>Atendente</th>
+    <th>Nota</th>
+    <th>Comentário</th>
+    <th>Data</th>
+    <th>Ações</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% evaluations.each do |evaluation| %>
+    <tr>
+      <td><%= evaluation.attendant.name %></td>
+      <td><%= evaluation.score %></td>
+      <td><%= evaluation.comment %></td>
+      <td><%= evaluation.evaluation_date.strftime("%d/%m/%Y") %></td>
+      <td>
+        <%= link_to "Editar", edit_evaluation_path(evaluation), class: "btn btn-warning btn-sm" %>
+        <%= link_to "Excluir", evaluation, method: :delete, data: { confirm: "Tem certeza?" }, class: "btn btn-danger btn-sm" %>
+      </td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
