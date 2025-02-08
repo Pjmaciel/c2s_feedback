@@ -55,4 +55,6 @@ Rails.application.routes.draw do
       resources :evaluations
     end
   end
+
+  resources :evaluations
 end
