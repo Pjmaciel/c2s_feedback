@@ -60,6 +60,8 @@ Rails.application.routes.draw do
       get 'health/show'
       get '/health', to: 'health#show'
 
+      resources :evaluation_requests, only: [:create, :show], param: :token
+
       resources :evaluations
     end
   end

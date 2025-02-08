@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_08_024637) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_08_201853) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -28,6 +28,19 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_08_024637) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["cpf"], name: "index_client_profiles_on_cpf", unique: true
+  end
+
+  create_table "evaluation_requests", force: :cascade do |t|
+    t.bigint "attendant_id", null: false
+    t.bigint "client_id", null: false
+    t.string "evaluation_token", null: false
+    t.string "status", default: "pending", null: false
+    t.datetime "expires_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["attendant_id"], name: "index_evaluation_requests_on_attendant_id"
+    t.index ["client_id"], name: "index_evaluation_requests_on_client_id"
+    t.index ["evaluation_token"], name: "index_evaluation_requests_on_evaluation_token", unique: true
   end
 
   create_table "evaluations", force: :cascade do |t|
@@ -66,6 +79,8 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_08_024637) do
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
+  add_foreign_key "evaluation_requests", "users", column: "attendant_id"
+  add_foreign_key "evaluation_requests", "users", column: "client_id"
   add_foreign_key "evaluations", "users", column: "attendant_id"
   add_foreign_key "evaluations", "users", column: "client_id"
   add_foreign_key "manager_profiles", "users"
