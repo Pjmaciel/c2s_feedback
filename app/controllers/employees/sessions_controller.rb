@@ -1,6 +1,16 @@
 # frozen_string_literal: true
 
 class Employees::SessionsController < Devise::SessionsController
+
+  def after_sign_in_path_for(resource)
+    if resource.attendant?
+      employee_dashboard_path
+    elsif resource.manager?
+      manager_dashboard_path
+    else
+      root_path
+    end
+  end
   def new
     # Inicializa o recurso manualmente
     self.resource = User.new

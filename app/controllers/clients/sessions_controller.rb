@@ -1,5 +1,14 @@
 class Clients::SessionsController < Devise::SessionsController
-  def new
+
+  def after_sign_in_path_for(resource)
+    if resource.client?
+      client_dashboard_path
+    else
+      root_path
+    end
+  end
+
+def new
     # Inicializa o recurso manualmente
     self.resource = User.new
     resource.build_client_profile
