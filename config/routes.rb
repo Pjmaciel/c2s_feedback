@@ -7,7 +7,13 @@ Rails.application.routes.draw do
   get '/up' => proc { [200, {}, ['OK']] }
 
   #autentication
-  devise_for :users
+  # devise_for :users
+  devise_for :users,
+             skip: [:sessions, :registrations],
+             controllers: {
+               sessions: 'users/sessions'
+             }
+
 
   # Rotas personalizadas para clientes
   devise_scope :user do
@@ -39,7 +45,9 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
 
   # Sidekiq Web UI (only accessible to Admin in the future)
-  mount Sidekiq::Web => '/sidekiq'
+  authenticate :user, ->(u) { u.manager? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
 
   get 'redoc/index'
   mount Rswag::Ui::Engine => '/swagger'
@@ -57,4 +65,23 @@ Rails.application.routes.draw do
   end
 
   resources :evaluations
+
+  # Área logada
+  namespace :client do
+    get 'dashboard', to: 'dashboard#index'
+    resources :evaluations
+    resource :profile, only: [:show, :edit, :update]
+  end
+
+  namespace :employee do
+    get 'dashboard', to: 'dashboard#index'
+    resources :evaluations, only: [:index, :show]
+  end
+
+  namespace :manager do
+    get 'dashboard', to: 'dashboard#index'
+    resources :evaluations
+    resources :attendants
+  end
+
 end

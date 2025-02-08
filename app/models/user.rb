@@ -4,6 +4,9 @@ class User < ApplicationRecord
   has_one :attendant_profile, dependent: :destroy
   has_one :manager_profile, dependent: :destroy
 
+  has_many :evaluations, foreign_key: :client_id
+  has_many :received_evaluations, class_name: 'Evaluation', foreign_key: :attendant_id
+
   # Aceita atributos aninhados para os perfis
   accepts_nested_attributes_for :client_profile
   accepts_nested_attributes_for :attendant_profile
