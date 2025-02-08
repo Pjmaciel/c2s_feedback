@@ -1,0 +1,34 @@
+<h2>Cadastro de Cliente</h2>
+
+<%= form_for(resource, as: resource_name, url: client_registration_path) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <%= f.fields_for :client_profile do |profile_fields| %>
+    <div class="field">
+      <%= profile_fields.label :cpf, "CPF" %><br />
+      <%= profile_fields.text_field :cpf %>
+    </div>
+  <% end %>
+
+  <div class="field">
+    <%= f.label :email %><br />
+    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %>
+    <% if @minimum_password_length %>
+      <em>(<%= @minimum_password_length %> caracteres no mínimo)</em>
+    <% end %><br />
+    <%= f.password_field :password, autocomplete: "new-password" %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password_confirmation %><br />
+    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Cadastrar" %>
+  </div>
+<% end %>

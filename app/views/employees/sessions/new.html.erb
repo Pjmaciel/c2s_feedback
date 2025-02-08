@@ -1,0 +1,19 @@
+<h2>Login Empresa</h2>
+
+<%= form_for(resource, as: resource_name, url: employee_session_path) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :registration_number, "Matrícula" %><br />
+    <%= f.text_field :registration_number, autofocus: true, value: params.dig(:user, :attendant_profile_attributes, :registration_number) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Entrar" %>
+  </div>
+<% end %>

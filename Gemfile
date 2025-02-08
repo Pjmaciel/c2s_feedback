@@ -25,6 +25,7 @@ gem 'dotenv-rails' # Load environment variables from .env file
 # --- Authentication & Authorization ---
 gem 'devise' # User authentication
 gem 'pundit' # Role-based authorization
+gem 'cpf_cnpj', '~> 0.2.1'
 
 # --- Web Scraping ---
 gem 'nokogiri' # HTML and XML parsing
