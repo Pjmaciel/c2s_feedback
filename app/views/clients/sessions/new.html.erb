@@ -1,0 +1,19 @@
+<h2>Login Cliente</h2>
+
+<%= form_for(resource, as: resource_name, url: client_session_path) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div class="field">
+    <%= f.label :cpf, "CPF" %><br />
+    <%= f.text_field :cpf, autofocus: true, value: params.dig(:user, :client_profile_attributes, :cpf) %>
+  </div>
+
+  <div class="field">
+    <%= f.label :password %><br />
+    <%= f.password_field :password, autocomplete: "current-password" %>
+  </div>
+
+  <div class="actions">
+    <%= f.submit "Entrar" %>
+  </div>
+<% end %>
