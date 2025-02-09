@@ -1,0 +1,19 @@
+<h1>Editar Avaliação</h1>
+
+<%= form_with(model: @evaluation, url: client_evaluation_path(@evaluation), method: :patch, local: true) do |form| %>
+  <div class="field">
+    <%= form.label :score, "Nota (0-10)" %>
+    <%= form.number_field :score, min: 0, max: 10, required: true %>
+  </div>
+
+  <div class="field">
+    <%= form.label :comment, "Comentário" %>
+    <%= form.text_area :comment, rows: 4, required: true %>
+  </div>
+
+  <div class="actions">
+    <%= form.submit "Atualizar Avaliação", class: "btn btn-primary" %>
+  </div>
+<% end %>
+
+<%= link_to "Cancelar", client_dashboard_path, class: "btn btn-secondary" %>
