@@ -18,6 +18,7 @@ gem 'puma', '>= 5.0' # Web server for Rails
 # --- Background Jobs ---
 gem 'sidekiq' # Background job processing
 gem 'redis', '>= 4.0.1' # Required for Sidekiq
+gem 'sidekiq-cron'
 
 # --- Environment Configuration ---
 gem 'dotenv-rails' # Load environment variables from .env file

@@ -11,6 +11,11 @@ module C2SFeedback
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 7.1
 
+    # Define o fuso horário padrão para o Brasil (Ajuste conforme necessário)
+    config.time_zone = 'America/Sao_Paulo'
+
+    # Faz com que o Rails armazene as datas no banco de dados no fuso horário local
+    config.active_record.default_timezone = :local
 
     config.autoload_lib(ignore: %w(assets tasks))
 
