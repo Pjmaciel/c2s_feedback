@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 class Evaluation < ApplicationRecord
   belongs_to :attendant, class_name: 'User', optional: false
   belongs_to :client, class_name: 'User', optional: false
@@ -12,15 +10,18 @@ class Evaluation < ApplicationRecord
   validate :attendant_must_be_attendant
   validate :evaluation_date_cannot_be_in_future
 
-  after_commit :notify_managers, on: :create
+  after_commit :notify_managers, :notify_attendant, on: :create
 
   private
 
   def notify_managers
-    manager_users = User.joins(:manager_profile).distinct
-    manager_users.each do |manager|
+    User.joins(:manager_profile).distinct.each do |manager|
       EvaluationNotificationJob.perform_later(self.id, manager.id)
     end
+  end
+
+  def notify_attendant
+    AttendantNotificationJob.perform_later(self.id)
   end
 
   def client_must_be_client
@@ -41,7 +42,3 @@ class Evaluation < ApplicationRecord
     errors.add(:evaluation_date, 'cannot be in the future')
   end
 end
-
-
-
-
