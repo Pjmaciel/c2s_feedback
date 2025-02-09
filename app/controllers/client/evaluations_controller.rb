@@ -2,7 +2,11 @@
 
 module Client
   class EvaluationsController < BaseController
-    before_action :set_evaluation, only: [:show, :edit, :update, :destroy]
+    before_action :authenticate_user!
+    before_action :ensure_client!
+
+    before_action :set_evaluation, only: [:show, :edit, :update]
+
 
     def index
       @evaluations = current_user.evaluations.order(created_at: :desc)
@@ -11,20 +15,56 @@ module Client
     def show; end
 
     def new
-      @evaluation = current_user.evaluations.build
-      @attendants = User.attendants
+      @evaluation_request = EvaluationRequest.find_by(evaluation_token: params[:token], client: current_user)
+
+      unless @evaluation_request&.pending?
+        redirect_to root_path, alert: "Solicitação inválida ou expirada."
+        return
+      end
+
+      @evaluation = current_user.evaluations.build(attendant: @evaluation_request.attendant)
     end
 
+
     def create
-      @evaluation = current_user.evaluations.build(evaluation_params)
+      @evaluation_request = EvaluationRequest.find_by(evaluation_token: params[:token], client: current_user)
+
+      unless @evaluation_request&.pending?
+        redirect_to root_path, alert: "Solicitação inválida ou expirada."
+        return
+      end
+
+      @evaluation = current_user.evaluations.build(evaluation_params.merge(attendant: @evaluation_request.attendant))
 
       if @evaluation.save
-        redirect_to [:client, @evaluation], notice: 'Avaliação criada.'
+        @evaluation_request.update(status: :completed)
+        redirect_to client_dashboard_path, notice: "Avaliação registrada com sucesso!"
       else
-        @attendants = User.attendants
         render :new
       end
     end
+
+    def edit
+      @evaluation = Evaluation.find(params[:id])
+    end
+
+
+    def update
+      @evaluation = Evaluation.find(params[:id])
+      if @evaluation.update(evaluation_params)
+        redirect_to @evaluation, notice: 'Avaliação atualizada com sucesso.'
+      else
+        render :edit
+      end
+    end
+
+
+    def ensure_client!
+      unless current_user.client?
+        redirect_to root_path, alert: "Apenas clientes podem acessar esta página."
+      end
+    end
+
 
     private
 
