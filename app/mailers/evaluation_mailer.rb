@@ -34,4 +34,10 @@ class EvaluationMailer < ApplicationMailer
     )
   end
 
+  def daily_summary(attendant, evaluations)
+    @attendant = attendant
+    @evaluations = evaluations
+    mail(to: @attendant.email, subject: 'Resumo diário das suas avaliações')
+  end
+
 end
