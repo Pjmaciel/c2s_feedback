@@ -51,6 +51,7 @@
   form.action = '<%= client_session_path %>';
   loginLabel.textContent = 'CPF';
   loginInput.placeholder = 'CPF';
+  loginInput.name = 'user[login]';
   registerLink.href = '<%= new_client_registration_path %>';
 
   clientButton.classList.add('bg-blue-600', 'text-white');
@@ -61,6 +62,7 @@
   form.action = '<%= employee_session_path %>';
   loginLabel.textContent = 'Matrícula';
   loginInput.placeholder = 'Matrícula';
+  loginInput.name = 'user[registration_number]';
   registerLink.href = '<%= new_employee_registration_path %>';
 
   employeeButton.classList.add('bg-blue-600', 'text-white');

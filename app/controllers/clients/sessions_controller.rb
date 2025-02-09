@@ -2,7 +2,7 @@ class Clients::SessionsController < Devise::SessionsController
 
   def after_sign_in_path_for(resource)
     if resource.client?
-      client_dashboard_path
+      Rails.application.routes.url_helpers.client_dashboard_path
     else
       root_path
     end
@@ -15,16 +15,23 @@ def new
     respond_with resource
   end
 
-  def create
-    # Busca o usuário pelo CPF no perfil associado
-    user = User.joins(:client_profile).find_by(client_profiles: { cpf: params[:user][:cpf] })
 
-    if user && user.valid_password?(params[:user][:password])
-      sign_in(user)
-      redirect_to after_sign_in_path_for(user), notice: 'Login realizado com sucesso!'
+  def create
+    user = User.joins(:client_profile).find_by(client_profiles: { cpf: params[:user][:login] })
+
+    if user&.valid_password?(params[:user][:password])
+      sign_in(:user, user)
+      redirect_to client_dashboard_path and return
     else
-      redirect_to new_client_session_path, alert: 'CPF ou senha inválidos.'
+      flash.now[:alert] = 'CPF ou senha inválidos'
+      render :new
     end
+  end
+
+
+  def destroy
+    signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
+    redirect_to root_path, notice: "Logout realizado com sucesso!"
   end
 
   private
