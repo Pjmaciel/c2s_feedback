@@ -33,6 +33,10 @@ Rails.application.routes.draw do
     get 'employees/sign_up', to: 'employees/registrations#new', as: :new_employee_registration
     post 'employees', to: 'employees/registrations#create', as: :employee_registration
 
+    # logout para clientes e funcionários
+    delete 'clients/sign_out', to: 'clients/sessions#destroy', as: :destroy_client_session
+    delete 'employees/sign_out', to: 'employees/sessions#destroy', as: :destroy_employee_session
+
   end
 
 
@@ -45,9 +49,7 @@ Rails.application.routes.draw do
   get '/contact', to: 'pages#contact'
 
   # Sidekiq Web UI (only accessible to Admin in the future)
-  authenticate :user, ->(u) { u.manager? } do
-    mount Sidekiq::Web => '/sidekiq'
-  end
+  mount Sidekiq::Web => '/sidekiq'
 
   get 'redoc/index'
   mount Rswag::Ui::Engine => '/swagger'
@@ -62,7 +64,7 @@ Rails.application.routes.draw do
 
       resources :evaluation_requests, only: [:create, :show], param: :token
 
-      resources :evaluations
+      resources :evaluations, only: [:create, :show]
     end
   end
 
@@ -70,14 +72,14 @@ Rails.application.routes.draw do
 
   # Área logada
   namespace :client do
-    get 'dashboard', to: 'dashboard#index'
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
     resources :evaluations
-    resource :profile, only: [:show, :edit, :update]
   end
 
-  namespace :employee do
-    get 'dashboard', to: 'dashboard#index'
-    resources :evaluations, only: [:index, :show]
+  namespace :attendant do
+    get '/dashboard', to: 'dashboard#index', as: :dashboard
+    resources :evaluation_requests
+    resources :evaluations
   end
 
   namespace :manager do
