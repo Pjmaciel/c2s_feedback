@@ -58,6 +58,31 @@ module Client
       end
     end
 
+    def destroy
+      @evaluation = current_user.evaluations.find(params[:id])
+
+      if @evaluation.created_at > 24.hours.ago
+        @evaluation.destroy
+        redirect_to client_dashboard_path, notice: "Avaliação excluída com sucesso."
+      else
+        redirect_to client_dashboard_path, alert: "Avaliação não pode ser excluída após 24 horas."
+      end
+    end
+
+    def update
+      @evaluation = current_user.evaluations.find(params[:id])
+
+      if @evaluation.created_at > 24.hours.ago
+        if @evaluation.update(evaluation_params)
+          redirect_to client_dashboard_path, notice: 'Avaliação atualizada com sucesso.'
+        else
+          render :edit
+        end
+      else
+        redirect_to client_dashboard_path, alert: "A avaliação só pode ser editada dentro de 24 horas após a criação."
+      end
+    end
+
 
     def ensure_client!
       unless current_user.client?
