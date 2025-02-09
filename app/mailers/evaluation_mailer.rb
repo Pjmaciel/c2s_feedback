@@ -23,4 +23,15 @@ class EvaluationMailer < ApplicationMailer
       subject: "Nova Avaliação Recebida"
     )
   end
+
+  def notify_attendant(attendant, evaluation)
+    @attendant = attendant
+    @evaluation = evaluation
+
+    mail(
+      to: @attendant.email,
+      subject: "Você recebeu uma nova avaliação"
+    )
+  end
+
 end
