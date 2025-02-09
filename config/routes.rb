@@ -65,6 +65,12 @@ Rails.application.routes.draw do
       resources :evaluation_requests, only: [:create, :show], param: :token
 
       resources :evaluations, only: [:create, :show]
+
+      resources :evaluations, only: [:index] do
+        collection do
+          get 'filter'
+        end
+      end
     end
   end
 
@@ -85,6 +91,7 @@ Rails.application.routes.draw do
   namespace :manager do
     get 'dashboard', to: 'dashboard#index'
     resources :evaluations
+    resources :reports, only: [:index, :create]
     resources :attendants
   end
 

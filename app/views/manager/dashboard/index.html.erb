@@ -1,0 +1,74 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Dashboard do Gestor</h1>
+    <%= link_to manager_reports_path, class: 'bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' do %>
+      <i class="fas fa-chart-bar mr-2"></i> Relatórios
+    <% end %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Total de Avaliações</h3>
+      <p class="text-3xl font-bold text-blue-600"><%= @total_evaluations %></p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Nota Média</h3>
+      <p class="text-3xl font-bold text-blue-600"><%= @average_score || 'N/A' %></p>
+    </div>
+
+    <div class="bg-white rounded-lg shadow p-6">
+      <h3 class="text-lg font-semibold text-gray-900 mb-2">Total de Atendentes</h3>
+      <p class="text-3xl font-bold text-blue-600"><%= @total_attendants %></p>
+    </div>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Últimas Avaliações</h2>
+      <%= link_to 'Ver todas', manager_evaluations_path, class: 'text-blue-600 hover:text-blue-800' %>
+    </div>
+
+    <div class="overflow-x-auto">
+      <table class="min-w-full">
+        <thead class="bg-gray-50">
+        <tr>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Data</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Atendente</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Cliente</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Nota</th>
+          <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Ações</th>
+        </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-200">
+        <% @recent_evaluations.each do |evaluation| %>
+          <tr>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+              <%= evaluation.evaluation_date.strftime("%d/%m/%Y") %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <%= evaluation.attendant.name %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+              <%= evaluation.client.name %>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap">
+                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                  <%= evaluation.score >= 7 ? 'bg-green-100 text-green-800' :
+                                                     evaluation.score >= 5 ? 'bg-yellow-100 text-yellow-800' :
+                                                       'bg-red-100 text-red-800' %>">
+                  <%= evaluation.score %>/10
+                </span>
+            </td>
+            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+              <%= link_to 'Ver Detalhes',
+                          manager_evaluation_path(evaluation),
+                          class: 'text-blue-600 hover:text-blue-800' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
