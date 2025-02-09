@@ -1,0 +1,66 @@
+<div class="container mx-auto px-4 py-8">
+  <h1 class="text-2xl font-bold mb-6">Dashboard do Atendente</h1>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
+    <!-- Estatísticas -->
+    <div class="bg-white p-4 rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Total de Avaliações</h3>
+      <p class="text-3xl font-bold"><%= @evaluation_count %></p>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Nota Média</h3>
+      <p class="text-3xl font-bold"><%= @average_score || 'N/A' %></p>
+    </div>
+
+    <div class="bg-white p-4 rounded-lg shadow">
+      <h3 class="text-lg font-semibold mb-2">Solicitações Pendentes</h3>
+      <p class="text-3xl font-bold"><%= @pending_requests %></p>
+    </div>
+  </div>
+
+  <!-- Envio do formulario sidekiq -->
+  <div class="mb-8">
+    <%= link_to new_attendant_evaluation_request_path,
+                class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" do %>
+      <i class="fas fa-plus mr-2"></i> Nova Solicitação de Avaliação
+    <% end %>
+  </div>
+
+  <!-- Últimas Avaliações -->
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-semibold">Últimas Avaliações</h2>
+      <%= link_to 'Ver todas', attendant_evaluations_path, class: 'text-blue-600 hover:text-blue-800' %>
+    </div>
+
+    <% if @recent_evaluations.any? %>
+      <div class="overflow-x-auto">
+        <table class="min-w-full">
+          <thead>
+          <tr class="bg-gray-100">
+            <th class="px-6 py-3 text-left">Data</th>
+            <th class="px-6 py-3 text-left">Cliente</th>
+            <th class="px-6 py-3 text-left">Nota</th>
+            <th class="px-6 py-3 text-left">Ações</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @recent_evaluations.each do |evaluation| %>
+            <tr class="border-b">
+              <td class="px-6 py-4"><%= evaluation.evaluation_date.strftime("%d/%m/%Y") %></td>
+              <td class="px-6 py-4"><%= evaluation.client.name %></td>
+              <td class="px-6 py-4"><%= evaluation.score %>/10</td>
+              <td class="px-6 py-4">
+                <%= link_to 'Ver detalhes', attendant_evaluation_path(evaluation), class: 'text-blue-600 hover:text-blue-800' %>
+              </td>
+            </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="text-gray-600">Nenhuma avaliação recebida ainda.</p>
+    <% end %>
+  </div>
+</div>

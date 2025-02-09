@@ -1,0 +1,37 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="flex justify-between items-center mb-6">
+      <h1 class="text-2xl font-bold">Detalhes da Avaliação</h1>
+      <%= link_to 'Voltar', attendant_evaluations_path,
+                  class: 'text-blue-600 hover:text-blue-800' %>
+    </div>
+
+    <div class="bg-white rounded-lg shadow-lg p-6">
+      <div class="grid grid-cols-2 gap-6 mb-6">
+        <div>
+          <h3 class="text-gray-600 text-sm">Cliente</h3>
+          <p class="text-lg font-semibold"><%= @evaluation.client.name %></p>
+        </div>
+
+        <div>
+          <h3 class="text-gray-600 text-sm">Data da Avaliação</h3>
+          <p class="text-lg font-semibold">
+            <%= @evaluation.evaluation_date.strftime("%d/%m/%Y %H:%M") %>
+          </p>
+        </div>
+      </div>
+
+      <div class="mb-6">
+        <h3 class="text-gray-600 text-sm mb-2">Nota</h3>
+        <div class="text-4xl font-bold text-blue-600">
+          <%= @evaluation.score %>/10
+        </div>
+      </div>
+
+      <div>
+        <h3 class="text-gray-600 text-sm mb-2">Comentário</h3>
+        <p class="text-gray-800 whitespace-pre-wrap"><%= @evaluation.comment %></p>
+      </div>
+    </div>
+  </div>
+</div>
