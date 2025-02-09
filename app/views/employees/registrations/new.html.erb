@@ -1,35 +1,54 @@
-<h2>Cadastro de Funcionário</h2>
+<%# app/views/employees/registrations/new.html.erb %>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-xs">
+    <h2 class="text-center text-2xl font-semibold mb-6">Cadastro de Funcionário</h2>
 
-<%= form_for(resource, as: resource_name, url: employee_registration_path) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
+    <%= form_for(resource, as: resource_name, url: employee_registration_path, html: { class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4" }) do |f| %>
+      <%= render "devise/shared/error_messages", resource: resource %>
 
-  <%= f.fields_for :attendant_profile do |profile_fields| %>
-    <div class="field">
-      <%= profile_fields.label :registration_number, "Número de Registro" %><br />
-      <%= profile_fields.text_field :registration_number, pattern: '[VG]\\d{4}',
-                                    title: 'O número de registro deve estar no formato V1234 ou G1234.' %>
-    </div>
-  <% end %>
 
-  <div class="field">
-    <%= f.label :email %><br />
-    <%= f.email_field :email, autofocus: true, autocomplete: "email" %>
+      <div class="mb-4">
+        <%= f.label :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.text_field :name,
+                         class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+
+      <%= f.fields_for :attendant_profile do |profile_fields| %>
+        <div class="mb-4">
+          <%= profile_fields.label :registration_number, "Número de Registro",
+                                   class: "block text-gray-700 text-sm font-bold mb-2" %>
+          <%= profile_fields.text_field :registration_number,
+                                        class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                                        pattern: '[VG]\\d{4}',
+                                        title: 'O número de registro deve estar no formato V1234 ou G1234.' %>
+        </div>
+      <% end %>
+
+      <div class="mb-4">
+        <%= f.label :email, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.email_field :email, autocomplete: "email",
+                          class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.password_field :password, autocomplete: "new-password",
+                             class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+        <% if @minimum_password_length %>
+          <p class="text-gray-600 text-xs italic mt-1">(<%= @minimum_password_length %> caracteres no mínimo)</p>
+        <% end %>
+      </div>
+
+      <div class="mb-6">
+        <%= f.label :password_confirmation, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.password_field :password_confirmation, autocomplete: "new-password",
+                             class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" %>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit "Cadastrar", class: "bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+        <%= link_to "Voltar", root_path, class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800" %>
+      </div>
+    <% end %>
   </div>
-
-  <div class="field">
-    <%= f.label :password %>
-    <% if @minimum_password_length %>
-      <em>(<%= @minimum_password_length %> caracteres no mínimo)</em>
-    <% end %><br />
-    <%= f.password_field :password, autocomplete: "new-password" %>
-  </div>
-
-  <div class="field">
-    <%= f.label :password_confirmation %><br />
-    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
-  </div>
-
-  <div class="actions">
-    <%= f.submit "Cadastrar" %>
-  </div>
-<% end %>
+</div>

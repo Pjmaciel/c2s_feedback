@@ -1,0 +1,37 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Minhas Avaliações</h1>
+  </div>
+
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <% if @evaluations.any? %>
+      <table class="min-w-full">
+        <thead>
+        <tr class="bg-gray-100">
+          <th class="px-6 py-3 text-left">Data</th>
+          <th class="px-6 py-3 text-left">Cliente</th>
+          <th class="px-6 py-3 text-left">Nota</th>
+          <th class="px-6 py-3 text-left">Comentário</th>
+          <th class="px-6 py-3 text-left">Ações</th>
+        </tr>
+        </thead>
+        <tbody>
+        <% @evaluations.each do |evaluation| %>
+          <tr class="border-b">
+            <td class="px-6 py-4"><%= evaluation.evaluation_date.strftime("%d/%m/%Y") %></td>
+            <td class="px-6 py-4"><%= evaluation.client.name %></td>
+            <td class="px-6 py-4"><%= evaluation.score %>/10</td>
+            <td class="px-6 py-4"><%= truncate(evaluation.comment, length: 50) %></td>
+            <td class="px-6 py-4">
+              <%= link_to 'Ver detalhes', attendant_evaluation_path(evaluation),
+                          class: 'text-blue-600 hover:text-blue-800' %>
+            </td>
+          </tr>
+        <% end %>
+        </tbody>
+      </table>
+    <% else %>
+      <p class="p-6 text-gray-600">Nenhuma avaliação encontrada.</p>
+    <% end %>
+  </div>
+</div>

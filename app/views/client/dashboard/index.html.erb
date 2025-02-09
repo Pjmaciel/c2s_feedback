@@ -1,0 +1,27 @@
+<div class="grid gap-6">
+  <div class="p-6 bg-white rounded-lg shadow">
+    <h1 class="text-2xl font-bold mb-6">Dashboard</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+      <div class="bg-blue-50 p-4 rounded-lg">
+        <h3 class="text-lg font-semibold text-blue-700">Total de Avaliações</h3>
+        <p class="text-3xl font-bold"><%= @evaluation_count %></p>
+      </div>
+    </div>
+
+    <div class="mt-8">
+      <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-semibold">Avaliações Recentes</h2>
+        <%= link_to 'Ver todas', client_evaluations_path, class: 'text-blue-600 hover:text-blue-800' %>
+      </div>
+
+      <% if @recent_evaluations.any? %>
+        <div class="overflow-x-auto">
+          <%= render 'client/evaluations/table', evaluations: @recent_evaluations %>
+        </div>
+      <% else %>
+        <p class="text-gray-500">Nenhuma avaliação realizada ainda.</p>
+      <% end %>
+    </div>
+  </div>
+</div>

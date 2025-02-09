@@ -49,6 +49,8 @@ gem 'foreman' # Process management tool for Rails and Sidekiq
 # --- Development Tools ---
 group :development do
   gem 'debug', platforms: %i[mri windows] # Debugging tools
+  gem 'letter_opener'
 end
 
 gem "importmap-rails", "~> 2.1"
+

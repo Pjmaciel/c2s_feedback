@@ -1,0 +1,14 @@
+<div>
+  <h1>Olá <%= @client.name %>,</h1>
+
+  <p>Como foi seu atendimento com <%= @attendant.name %>?</p>
+
+  <p>Para avaliar, clique no botão abaixo:</p>
+
+  <%= link_to "Avaliar Atendimento",
+              new_client_evaluation_url(token: @evaluation_request.evaluation_token),
+              class: "button",
+              style: "display: inline-block; padding: 10px 20px; background: #4A90E2; color: white; text-decoration: none; border-radius: 5px;" %>
+
+  <p>Esta solicitação expira em 24 horas.</p>
+</div>
