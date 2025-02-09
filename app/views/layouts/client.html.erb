@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>C2S Feedback - Área do Cliente</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
+  <%= stylesheet_link_tag "application" %>
+  <%= javascript_importmap_tags %>
+</head>
+<body class="bg-gray-100">
+<div class="flex h-screen">
+  <%= render 'client/shared/sidebar' %>
+  <div class="flex-1 overflow-auto">
+    <%= render 'shared/flash' %>
+    <main class="p-6">
+      <%= yield %>
+    </main>
+  </div>
+</div>
+</body>
+</html>

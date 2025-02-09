@@ -1,0 +1,59 @@
+<div class="bg-white rounded-lg shadow p-6">
+  <h1 class="text-2xl font-bold mb-6">Nova Avaliação</h1>
+
+  <form id="evaluation-form" class="space-y-6">
+    <input type="hidden" id="evaluation-token" value="<%= params[:token] %>">
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Nota</label>
+      <input type="number" id="evaluation-score" min="0" max="10" required
+             class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500">
+    </div>
+
+    <div>
+      <label class="block text-sm font-medium text-gray-700">Comentário</label>
+      <textarea id="evaluation-comment" rows="4"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"></textarea>
+    </div>
+
+    <div class="flex justify-end space-x-4">
+      <button type="button" id="submit-evaluation"
+              class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700">
+        Enviar Avaliação
+      </button>
+    </div>
+  </form>
+
+  <p id="success-message" class="hidden text-green-600 mt-4"></p>
+  <p id="error-message" class="hidden text-red-600 mt-4"></p>
+</div>
+
+<script>
+    document.getElementById("submit-evaluation").addEventListener("click", function () {
+        const token = document.getElementById("evaluation-token").value;
+        const score = document.getElementById("evaluation-score").value;
+        const comment = document.getElementById("evaluation-comment").value;
+
+        fetch("/api/v1/evaluations", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                token: token,
+                evaluation: { score: score, comment: comment }
+            })
+        })
+          .then(response => response.json())
+          .then(data => {
+              if (data.message) {
+                  document.getElementById("success-message").textContent = data.message;
+                  document.getElementById("success-message").classList.remove("hidden");
+              } else {
+                  document.getElementById("error-message").textContent = data.errors.join(", ");
+                  document.getElementById("error-message").classList.remove("hidden");
+              }
+          })
+          .catch(error => {
+              console.error("Erro ao enviar avaliação:", error);
+          });
+    });
+</script>

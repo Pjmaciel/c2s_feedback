@@ -1,0 +1,57 @@
+<%= render 'shared/nav' %>
+
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
+    <div class="mb-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Detalhes da Avaliação</h1>
+      <%= link_to 'Voltar', client_evaluations_path,
+                  class: "text-gray-600 hover:text-gray-900" %>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-6">
+        <div class="grid grid-cols-2 gap-6 mb-6">
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Atendente</h3>
+            <p class="mt-1 text-lg text-gray-900"><%= @evaluation.attendant.name %></p>
+          </div>
+
+          <div>
+            <h3 class="text-sm font-medium text-gray-500">Data da Avaliação</h3>
+            <p class="mt-1 text-lg text-gray-900">
+              <%= @evaluation.evaluation_date.strftime("%d/%m/%Y") %>
+            </p>
+          </div>
+        </div>
+
+        <div class="mb-6">
+          <h3 class="text-sm font-medium text-gray-500">Nota</h3>
+          <div class="mt-1">
+            <span class="px-4 py-2 inline-flex text-lg leading-5 font-semibold rounded-full
+              <%= @evaluation.score >= 7 ? 'bg-green-100 text-green-800' :
+                                             @evaluation.score >= 5 ? 'bg-yellow-100 text-yellow-800' :
+                                               'bg-red-100 text-red-800' %>">
+              <%= @evaluation.score %>/10
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <h3 class="text-sm font-medium text-gray-500">Comentário</h3>
+          <p class="mt-1 text-gray-900"><%= @evaluation.comment %></p>
+        </div>
+      </div>
+
+      <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+        <div class="flex justify-end space-x-3">
+          <%= link_to 'Editar', edit_client_evaluation_path(@evaluation),
+                      class: "bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700" %>
+          <%= button_to 'Excluir', client_evaluation_path(@evaluation),
+                        method: :delete,
+                        class: "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700",
+                        data: { confirm: 'Tem certeza?' } %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

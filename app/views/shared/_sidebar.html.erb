@@ -1,0 +1,27 @@
+<aside class="bg-white rounded-lg shadow">
+  <div class="p-4 border-b">
+    <div class="flex items-center">
+      <div class="ml-3">
+        <p class="text-sm font-medium text-gray-900"><%= current_user.name %></p>
+        <p class="text-xs text-gray-500"><%= current_user.email %></p>
+      </div>
+    </div>
+  </div>
+
+  <nav class="p-4 space-y-2">
+    <%= link_to client_dashboard_path,
+                class: "flex items-center px-3 py-2 rounded-md #{current_page?(client_dashboard_path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}" do %>
+      <span>Dashboard</span>
+    <% end %>
+
+    <%= link_to client_evaluations_path,
+                class: "flex items-center px-3 py-2 rounded-md #{current_page?(client_evaluations_path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}" do %>
+      <span>Avaliações</span>
+    <% end %>
+
+    <%= link_to edit_user_registration_path,
+                class: "flex items-center px-3 py-2 rounded-md #{current_page?(edit_user_registration_path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}" do %>
+      <span>Meu Perfil</span>
+    <% end %>
+  </nav>
+</aside>

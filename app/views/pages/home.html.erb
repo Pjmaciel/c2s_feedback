@@ -1,22 +1,78 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Em Construção</title>
-  <style>
-      body {
-          font-family: Arial, sans-serif;
-          text-align: center;
-          margin: 50px;
-      }
-      h1 {
-          color: #333;
-      }
-  </style>
-</head>
-<body>
-<h1>🚧 Em Construção 🚧</h1>
-<p>Estamos trabalhando para lançar algo incrível! Volte em breve. 🚀</p>
-</body>
-</html>
+<%# app/views/pages/home.html.erb %>
+<div class="flex items-center justify-center min-h-screen bg-gray-100">
+  <div class="w-full max-w-xs">
+    <h2 class="text-center text-2xl font-semibold mb-6">Sign In With</h2>
+    <div class="flex justify-between mb-6">
+      <button id="client-button" onclick="toggleLoginField('client')"
+              class="flex items-center justify-center w-1/2 bg-blue-600 text-white py-2 rounded mr-2">
+        <i class="fas fa-user mr-2"></i> Cliente
+      </button>
+      <button id="employee-button" onclick="toggleLoginField('employee')"
+              class="flex items-center justify-center w-1/2 bg-white border border-gray-300 text-gray-700 py-2 rounded ml-2">
+        <i class="fas fa-user-tie mr-2"></i> Funcionario
+      </button>
+    </div>
+
+    <%= form_for(:user, url: new_client_session_path, html: { class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4", id: "login-form" }) do |f| %>
+      <div class="mb-4">
+        <%= f.label :login, "CPF", class: "block text-gray-700 text-sm font-bold mb-2", id: "login-label" %>
+        <%= f.text_field :login, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline",
+                         id: "login-input", placeholder: "CPF" %>
+      </div>
+
+      <div class="mb-4">
+        <%= f.label :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+        <%= f.password_field :password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 mb-3 leading-tight focus:outline-none focus:shadow-outline",
+                             placeholder: "******************" %>
+      </div>
+
+      <div class="mb-6 text-right">
+        <%= link_to "Forgot?", new_password_path(:user), class: "text-sm text-gray-500", id: "forgot-link" %>
+      </div>
+
+      <div class="flex items-center justify-between">
+        <%= f.submit "Sign In", class: "bg-gray-800 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+        <%= link_to "Cadastre-se", new_client_registration_path, class: "inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800", id: "register-link" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+
+<%= javascript_tag do %>
+  function toggleLoginField(type) {
+  const form = document.getElementById('login-form');
+  const loginLabel = document.getElementById('login-label');
+  const loginInput = document.getElementById('login-input');
+  const registerLink = document.getElementById('register-link');
+  const clientButton = document.getElementById('client-button');
+  const employeeButton = document.getElementById('employee-button');
+
+  if (type === 'client') {
+  form.action = '<%= client_session_path %>';
+  loginLabel.textContent = 'CPF';
+  loginInput.placeholder = 'CPF';
+  loginInput.name = 'user[login]';
+  registerLink.href = '<%= new_client_registration_path %>';
+
+  clientButton.classList.add('bg-blue-600', 'text-white');
+  clientButton.classList.remove('bg-white', 'border', 'border-gray-300', 'text-gray-700');
+  employeeButton.classList.add('bg-white', 'border', 'border-gray-300', 'text-gray-700');
+  employeeButton.classList.remove('bg-blue-600', 'text-white');
+  } else {
+  form.action = '<%= employee_session_path %>';
+  loginLabel.textContent = 'Matrícula';
+  loginInput.placeholder = 'Matrícula';
+  loginInput.name = 'user[registration_number]';
+  registerLink.href = '<%= new_employee_registration_path %>';
+
+  employeeButton.classList.add('bg-blue-600', 'text-white');
+  employeeButton.classList.remove('bg-white', 'border', 'border-gray-300', 'text-gray-700');
+  clientButton.classList.add('bg-white', 'border', 'border-gray-300', 'text-gray-700');
+  clientButton.classList.remove('bg-blue-600', 'text-white');
+  }
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+  toggleLoginField('client');
+  });
+<% end %>

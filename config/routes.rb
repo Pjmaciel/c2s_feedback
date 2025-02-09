@@ -7,7 +7,13 @@ Rails.application.routes.draw do
   get '/up' => proc { [200, {}, ['OK']] }
 
   #autentication
-  devise_for :users
+  # devise_for :users
+  devise_for :users,
+             skip: [:sessions, :registrations],
+             controllers: {
+               sessions: 'users/sessions'
+             }
+
 
   # Rotas personalizadas para clientes
   devise_scope :user do
@@ -26,6 +32,10 @@ Rails.application.routes.draw do
     # Rotas de registro para funcionários
     get 'employees/sign_up', to: 'employees/registrations#new', as: :new_employee_registration
     post 'employees', to: 'employees/registrations#create', as: :employee_registration
+
+    # logout para clientes e funcionários
+    delete 'clients/sign_out', to: 'clients/sessions#destroy', as: :destroy_client_session
+    delete 'employees/sign_out', to: 'employees/sessions#destroy', as: :destroy_employee_session
 
   end
 
@@ -51,6 +61,31 @@ Rails.application.routes.draw do
     namespace :v1 do
       get 'health/show'
       get '/health', to: 'health#show'
+
+      resources :evaluation_requests, only: [:create, :show], param: :token
+
+      resources :evaluations, only: [:create, :show]
     end
   end
+
+  resources :evaluations
+
+  # Área logada
+  namespace :client do
+    get 'dashboard', to: 'dashboard#index', as: :dashboard
+    resources :evaluations
+  end
+
+  namespace :attendant do
+    get '/dashboard', to: 'dashboard#index', as: :dashboard
+    resources :evaluation_requests
+    resources :evaluations
+  end
+
+  namespace :manager do
+    get 'dashboard', to: 'dashboard#index'
+    resources :evaluations
+    resources :attendants
+  end
+
 end

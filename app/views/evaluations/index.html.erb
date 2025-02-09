@@ -1,0 +1,5 @@
+<h2>Avaliações</h2>
+
+<%= link_to "Nova Avaliação", new_evaluation_path, class: "btn btn-primary mb-3" %>
+
+<%= render 'shared/evaluations_table', evaluations: @evaluations %>
