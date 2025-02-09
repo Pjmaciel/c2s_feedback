@@ -1,0 +1,30 @@
+<h1>Resumo Diário de Avaliações</h1>
+
+<p>Olá, <%= @attendant.name %>!</p>
+
+<p>Aqui está o resumo das suas avaliações do dia:</p>
+
+<table>
+  <thead>
+  <tr>
+    <th>Cliente</th>
+    <th>Nota</th>
+    <th>Comentário</th>
+    <th>Data</th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @evaluations.each do |evaluation| %>
+    <tr>
+      <td><%= evaluation.client.name %></td>
+      <td><%= evaluation.score %></td>
+      <td><%= evaluation.comment %></td>
+      <td><%= evaluation.evaluation_date.strftime('%d/%m/%Y %H:%M') %></td>
+    </tr>
+  <% end %>
+  </tbody>
+</table>
+
+<p>Mantenha o bom trabalho!</p>
+
+<p>Atenciosamente, <br> Equipe C2S Feedback</p>

@@ -7,3 +7,9 @@
 
 :redis:
   url: <%= ENV["REDIS_URL"] %>
+
+:schedule:
+  daily_evaluation_summary:
+    cron: "59 23 * * *"
+    class: "DailyEvaluationSummaryJob"
+    queue: "low"
