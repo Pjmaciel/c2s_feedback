@@ -14,5 +14,10 @@
   </td>
   <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
     <%= link_to 'Ver', client_evaluation_path(evaluation), class: "text-blue-600 hover:text-blue-900" %>
+
+    <% if evaluation.client_id == current_user.id %>
+      <%= link_to 'Editar', edit_client_evaluation_path(evaluation), class: "text-yellow-600 hover:text-yellow-900 ml-4" %>
+      <%= link_to 'Excluir', client_evaluation_path(evaluation), method: :delete, data: { confirm: "Tem certeza que deseja excluir esta avaliação?" }, class: "text-red-600 hover:text-red-900 ml-4" %>
+    <% end %>
   </td>
 </tr>
