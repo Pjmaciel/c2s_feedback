@@ -1,19 +1,51 @@
-<h1>Editar Avaliação</h1>
+<div class="container mx-auto px-4 py-8">
+  <div class="max-w-3xl mx-auto">
 
-<%= form_with(model: @evaluation, url: client_evaluation_path(@evaluation), method: :patch, local: true) do |form| %>
-  <div class="field">
-    <%= form.label :score, "Nota (0-10)" %>
-    <%= form.number_field :score, min: 0, max: 10, required: true %>
+    <div class="mb-6 flex justify-between items-center">
+      <h1 class="text-2xl font-bold">Editar Avaliação</h1>
+    </div>
+
+    <div class="bg-white rounded-lg shadow overflow-hidden">
+      <div class="p-6">
+        <%= form_with(model: @evaluation, url: client_evaluation_path(@evaluation), method: :patch, local: true) do |form| %>
+
+          <div class="grid grid-cols-2 gap-6 mb-6">
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Atendente</h3>
+              <p class="mt-1 text-lg text-gray-900"><%= @evaluation.attendant.name %></p>
+            </div>
+
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Data da Avaliação</h3>
+              <p class="mt-1 text-lg text-gray-900">
+                <%= @evaluation.evaluation_date.strftime("%d/%m/%Y") %>
+              </p>
+            </div>
+          </div>
+
+          <div class="mb-6">
+            <%= form.label :score, "Nota (0-10)", class: "text-sm font-medium text-gray-500" %>
+            <%= form.number_field :score, min: 0, max: 10, required: true,
+                                  class: "w-full border rounded-md px-3 py-2 text-lg text-gray-900" %>
+          </div>
+
+          <div class="mb-6">
+            <%= form.label :comment, "Comentário", class: "text-sm font-medium text-gray-500" %>
+            <%= form.text_area :comment, rows: 4, required: true,
+                               class: "w-full border rounded-md px-3 py-2 text-gray-900" %>
+          </div>
+
+          <div class="px-6 py-4 bg-gray-50 border-t border-gray-200">
+            <div class="flex justify-end space-x-3">
+              <%= form.submit "Atualizar Avaliação",
+                              class: "bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700" %>
+              <%= link_to "Cancelar", client_dashboard_path,
+                          class: "bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" %>
+            </div>
+          </div>
+
+        <% end %>
+      </div>
+    </div>
   </div>
-
-  <div class="field">
-    <%= form.label :comment, "Comentário" %>
-    <%= form.text_area :comment, rows: 4, required: true %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit "Atualizar Avaliação", class: "btn btn-primary" %>
-  </div>
-<% end %>
-
-<%= link_to "Cancelar", client_dashboard_path, class: "btn btn-secondary" %>
+</div>
