@@ -85,6 +85,7 @@ Rails.application.routes.draw do
   namespace :manager do
     get 'dashboard', to: 'dashboard#index'
     resources :evaluations
+    resources :reports, only: [:index, :create]
     resources :attendants
   end
 
