@@ -2,11 +2,13 @@
 
 class EvaluationRequestPolicy < ApplicationPolicy
   def create?
-    user.attendant?
+    user.client? && record.client_id == user.id
   end
 
   def show?
-    record.client == user || record.attendant == user || user.manager?
+    user.client? && record.client_id == user.id ||
+      user.attendant? && record.attendant_id == user.id ||
+      user.manager?
   end
 
   class Scope < Scope
