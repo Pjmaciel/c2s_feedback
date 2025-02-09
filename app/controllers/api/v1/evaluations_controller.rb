@@ -1,8 +1,10 @@
 module Api
   module V1
     class EvaluationsController < ApplicationController
+      include ActionController::MimeResponds
       skip_before_action :verify_authenticity_token
       before_action :set_evaluation_request, only: [:create]
+
 
       def create
         @evaluation = Evaluation.new(evaluation_params)
@@ -26,7 +28,56 @@ module Api
         end
       end
 
+      def index
+        @evaluations = policy_scope(Evaluation)
+                         .includes(:attendant, :client)
+                         .order(evaluation_date: :desc)
+
+        respond_to do |format|
+          format.json { render json: serialize_evaluations(@evaluations) }
+          format.csv { send_data generate_csv(@evaluations), filename: "evaluations-#{Date.today}.csv" }
+        end
+      end
+
+      def filter
+        @evaluations = EvaluationFilter.new(
+          policy_scope(Evaluation).includes(:attendant, :client),
+          filter_params
+        ).filter
+
+        render json: {
+          evaluations: serialize_evaluations(@evaluations),
+          meta: {
+            total_pages: @evaluations.total_pages,
+            current_page: @evaluations.current_page,
+            total_count: @evaluations.total_count
+          }
+        }
+      end
+
+
       private
+
+      def serialize_evaluations(evaluations)
+        evaluations.map do |evaluation|
+          {
+            id: evaluation.id,
+            score: evaluation.score,
+            comment: evaluation.comment,
+            evaluation_date: evaluation.evaluation_date,
+            attendant: {
+              id: evaluation.attendant.id,
+              name: evaluation.attendant.name,
+              registration_number: evaluation.attendant.attendant_profile&.registration_number
+            },
+            client: {
+              id: evaluation.client.id,
+              name: evaluation.client.name
+            }
+          }
+        end
+      end
+
 
       def set_evaluation_request
         @evaluation_request = EvaluationRequest.includes(:client, :attendant)
@@ -42,6 +93,28 @@ module Api
           render json: { error: "Não autorizado" },
                  status: :unauthorized
         end
+      end
+
+      def generate_csv(evaluations)
+        headers = ['Data', 'Atendente', 'Cliente', 'Nota', 'Comentário']
+
+        CSV.generate(headers: true) do |csv|
+          csv << headers
+
+          evaluations.each do |evaluation|
+            csv << [
+              evaluation.evaluation_date.strftime("%d/%m/%Y"),
+              evaluation.attendant.name,
+              evaluation.client.name,
+              evaluation.score,
+              evaluation.comment
+            ]
+          end
+        end
+      end
+
+      def filter_params
+        params.permit(:attendant_id, :date_range, :score, :page, :per_page)
       end
 
       def evaluation_params
