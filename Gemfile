@@ -59,7 +59,6 @@ group :development do
   gem 'letter_opener'
 end
 
-
-
 gem "importmap-rails", "~> 2.1"
 
+gem 'kaminari'

@@ -228,6 +228,18 @@ GEM
       bigdecimal (~> 3.1)
     jwt (2.10.1)
       base64
+    kaminari (1.2.2)
+      activesupport (>= 4.1.0)
+      kaminari-actionview (= 1.2.2)
+      kaminari-activerecord (= 1.2.2)
+      kaminari-core (= 1.2.2)
+    kaminari-actionview (1.2.2)
+      actionview
+      kaminari-core (= 1.2.2)
+    kaminari-activerecord (1.2.2)
+      activerecord
+      kaminari-core (= 1.2.2)
+    kaminari-core (1.2.2)
     launchy (3.1.0)
       addressable (~> 2.8)
       childprocess (~> 5.0)
@@ -453,6 +465,7 @@ DEPENDENCIES
   foreman
   google-cloud-language
   importmap-rails (~> 2.1)
+  kaminari
   letter_opener
   nokogiri
   pg (~> 1.5)
