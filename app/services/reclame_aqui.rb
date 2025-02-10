@@ -1,50 +1,51 @@
-require 'puppeteer'
+require 'selenium-webdriver'
 
 class ReclameAqui
   def self.fetch_company_info(company_name)
-    browser = nil
-    page = nil
+    options = Selenium::WebDriver::Chrome::Options.new
+
+    options.add_argument('--headless') # Executa sem abrir o navegador
+    options.add_argument('--disable-gpu')
+    options.add_argument('--no-sandbox')
+    options.add_argument('--disable-dev-shm-usage')
+    options.add_argument('--window-size=1280,1024')
+
+    options.add_argument('--user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36')
+
+    driver = Selenium::WebDriver.for(:chrome, options: options)
+
     begin
-      # Inicia o navegador
-      browser = Puppeteer.launch(headless: true)
-      page = browser.new_page
+      formatted_name = company_name.strip.downcase.gsub(' ', '-')
+      url = "https://www.reclameaqui.com.br/empresa/#{formatted_name}"
+      puts "🔍 Acessando URL: #{url}"
+      driver.get(url)
 
-      # Configurações para evitar bloqueios
-      page.set_user_agent("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36")
-      page.viewport = Puppeteer::Viewport.new(width: 1280, height: 1024)
+      wait = Selenium::WebDriver::Wait.new(timeout: 60)
 
-      # Acessa a página da empresa
-      url = "https://www.reclameaqui.com.br/empresa/#{company_name}"
-      puts "Tentando acessar URL: #{url}"
-      page.goto(url, wait_until: 'networkidle2', timeout: 120000) # Aumenta o timeout para 120 segundos
+      company_name_element = wait.until { driver.find_element(css: '#titulo_empresa_hero > h1') }
+      rating_element = wait.until { driver.find_element(css: '#ra-new-reputation > span > b') }
+      reviews_count_element = wait.until { driver.find_element(css: '#tag_reputacao_hero') }
 
-      # Espera o carregamento do conteúdo
-      puts "Página carregada. Procurando pelos seletores..."
-      page.wait_for_selector('#titulo_empresa_hero > h1', timeout: 120000) # Aumenta o timeout para 120 segundos
+      company_name = company_name_element.text.strip rescue "Nome não encontrado"
+      rating = rating_element.text.strip rescue "Nota não disponível"
+      reviews_count = reviews_count_element.text.strip rescue "Sem informações"
 
-      # Extrai informações
-      company_name = page.eval_on_selector('#titulo_empresa_hero > h1', 'el => el.textContent')
-      rating = page.eval_on_selector('#ra-new-reputation > span > b', 'el => el.textContent')
-      reviews_count = page.eval_on_selector('#tag_reputacao_hero', 'el => el.textContent')
-
-      {
-        company_name: company_name.strip,
-        rating: rating.strip,
-        reviews_count: reviews_count.strip
+      result = {
+        company_name: company_name,
+        rating: rating,
+        reviews_count: reviews_count
       }
-    rescue Puppeteer::TimeoutError => e
-      puts "Erro: Timeout ao tentar carregar a página ou localizar o seletor."
+
+      puts "✅ Dados coletados: #{result}"
+      result
+    rescue Selenium::WebDriver::Error::TimeoutError
+      puts "❌ Erro: Timeout ao tentar carregar a página ou localizar os seletores."
       { error: "Timeout ao processar as informações da empresa." }
-    rescue Puppeteer::ProtocolError => e
-      puts "Erro de protocolo: #{e.message}"
-      { error: "Erro de comunicação com o navegador." }
     rescue StandardError => e
-      puts "Erro inesperado: #{e.message}"
-      { error: "Ocorreu um erro ao processar as informações da empresa." }
+      puts "❌ Erro inesperado: #{e.message}"
+      { error: "Erro ao processar as informações da empresa." }
     ensure
-      # Fecha a página e o navegador, se estiverem abertos
-      page.close if page
-      browser.close if browser
+      driver.quit
     end
   end
 end
