@@ -6,7 +6,7 @@ class ReclameAqui
     page = nil
     begin
       # Inicia o navegador
-      browser = Puppeteer.launch(headless: false) # Modo não headless para depuração
+      browser = Puppeteer.launch(headless: true)
       page = browser.new_page
 
       # Configurações para evitar bloqueios
