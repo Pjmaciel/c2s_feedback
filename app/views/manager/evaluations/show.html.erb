@@ -38,6 +38,18 @@
             <%= @evaluation.score %>/10
           </span>
         </div>
+
+        <!-- Exibir o sentimento da avaliação -->
+        <div>
+          <h3 class="text-gray-600 text-sm">Sentimento</h3>
+          <% if @evaluation.sentiment == "positive" %>
+            <span class="badge bg-green-500 text-white px-3 py-1 rounded">😊 Positiva</span>
+          <% elsif @evaluation.sentiment == "negative" %>
+            <span class="badge bg-red-500 text-white px-3 py-1 rounded">😡 Negativa</span>
+          <% else %>
+            <span class="badge bg-yellow-500 text-white px-3 py-1 rounded">😐 Neutra</span>
+          <% end %>
+        </div>
       </div>
 
       <div>
