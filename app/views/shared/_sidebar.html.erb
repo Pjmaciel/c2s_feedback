@@ -23,5 +23,12 @@
                 class: "flex items-center px-3 py-2 rounded-md #{current_page?(edit_user_registration_path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}" do %>
       <span>Meu Perfil</span>
     <% end %>
+
+    <%= link_to manager_reputation_path,
+                class: "flex items-center px-3 py-2 rounded-md #{current_page?(manager_reputation_path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}" do %>
+      <i class="fas fa-chart-line mr-2"></i>
+      <span>Monitoramento de Reputação</span>
+    <% end %>
+
   </nav>
 </aside>
