@@ -1,9 +1,9 @@
 class ReputationChannel < ApplicationCable::Channel
   def subscribed
-    stream_from "reputation_#{params[:user_id]}"
+    stream_from "reputation_#{current_user.id}"
   end
 
   def unsubscribed
-    # Limpeza ao sair do canal
+    stop_all_streams
   end
 end
