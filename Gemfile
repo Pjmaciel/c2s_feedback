@@ -30,6 +30,9 @@ gem 'cpf_cnpj', '~> 0.2.1'
 
 # --- Web Scraping ---
 gem 'nokogiri' # HTML and XML parsing
+gem 'open-uri'
+gem 'mechanize'
+gem 'puppeteer-ruby'
 
 # --- Testing ---
 group :test do
