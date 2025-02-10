@@ -33,11 +33,12 @@ module Api
                          .includes(:attendant, :client)
                          .order(evaluation_date: :desc)
 
-        respond_to do |format|
-          format.json { render json: serialize_evaluations(@evaluations) }
-          format.csv { send_data generate_csv(@evaluations), filename: "evaluations-#{Date.today}.csv" }
-        end
+        @evaluations = @evaluations.where(sentiment: params[:sentiment]) if params[:sentiment].present?
+
+        render json: serialize_evaluations(@evaluations), status: :ok
       end
+
+
 
       def filter
         @evaluations = EvaluationFilter.new(
@@ -65,6 +66,7 @@ module Api
             score: evaluation.score,
             comment: evaluation.comment,
             evaluation_date: evaluation.evaluation_date,
+            sentiment: evaluation.sentiment, # ✅ Agora retorna o sentimento da avaliação
             attendant: {
               id: evaluation.attendant.id,
               name: evaluation.attendant.name,
@@ -114,7 +116,7 @@ module Api
       end
 
       def filter_params
-        params.permit(:attendant_id, :date_range, :score, :page, :per_page)
+        params.permit(:attendant_id, :date_range, :score, :page, :per_page, :sentiment)
       end
 
       def evaluation_params
