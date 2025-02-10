@@ -32,6 +32,10 @@ gem 'cpf_cnpj', '~> 0.2.1'
 gem 'nokogiri' # HTML and XML parsing
 gem 'selenium-webdriver'
 
+# --- API---
+gem 'google-cloud-language'
+
+
 
 # --- Testing ---
 group :test do
@@ -54,6 +58,8 @@ group :development do
   gem 'debug', platforms: %i[mri windows] # Debugging tools
   gem 'letter_opener'
 end
+
+
 
 gem "importmap-rails", "~> 2.1"
 
