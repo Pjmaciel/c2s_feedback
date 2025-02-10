@@ -2,7 +2,7 @@
   <div class="max-w-3xl mx-auto">
     <div class="flex justify-between items-center mb-6">
       <h1 class="text-2xl font-bold">Detalhes da Avaliação</h1>
-      <%= link_to 'Voltar', manager_evaluations_path,
+      <%= link_to 'Voltar', attendant_evaluations_path,
                   class: 'text-blue-600 hover:text-blue-800' %>
     </div>
 
@@ -11,15 +11,6 @@
         <div>
           <h3 class="text-gray-600 text-sm">Cliente</h3>
           <p class="text-lg font-semibold"><%= @evaluation.client.name %></p>
-          <p class="text-sm text-gray-500"><%= @evaluation.client.email %></p>
-        </div>
-
-        <div>
-          <h3 class="text-gray-600 text-sm">Atendente</h3>
-          <p class="text-lg font-semibold"><%= @evaluation.attendant.name %></p>
-          <p class="text-sm text-gray-500">
-            <%= @evaluation.attendant.attendant_profile.registration_number %>
-          </p>
         </div>
 
         <div>
@@ -39,7 +30,6 @@
           </span>
         </div>
 
-        <!-- Exibir o sentimento da avaliação -->
         <div>
           <h3 class="text-gray-600 text-sm">Sentimento</h3>
           <% if @evaluation.sentiment == "positive" %>

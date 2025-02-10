@@ -4,8 +4,21 @@ class EvaluationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @evaluations = policy_scope(Evaluation)
+    @evaluations = Evaluation.includes(:attendant, :client).order(evaluation_date: :desc)
+
+    @evaluations = @evaluations.where(attendant_id: params[:attendant_id]) if params[:attendant_id].present?
+    @evaluations = @evaluations.where(score: params[:score]) if params[:score].present?
+
+    if params[:sentiment].present?
+      Rails.logger.info "Aplicando filtro de sentimento: #{params[:sentiment]}"
+      @evaluations = @evaluations.where(sentiment: params[:sentiment])
+    end
+
+    render :index
   end
+
+
+
 
   def show
     authorize @evaluation

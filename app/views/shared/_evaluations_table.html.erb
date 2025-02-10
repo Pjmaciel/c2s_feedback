@@ -4,6 +4,7 @@
     <th>Atendente</th>
     <th>Nota</th>
     <th>Comentário</th>
+    <th>Sentimento</th> <!-- Nova coluna para exibir o sentimento -->
     <th>Data</th>
     <th>Ações</th>
   </tr>
@@ -14,6 +15,15 @@
       <td><%= evaluation.attendant.name %></td>
       <td><%= evaluation.score %></td>
       <td><%= evaluation.comment %></td>
+      <td>
+        <% if evaluation.sentiment == "positive" %>
+          <span class="badge bg-success">😊 Positiva</span>
+        <% elsif evaluation.sentiment == "negative" %>
+          <span class="badge bg-danger">😡 Negativa</span>
+        <% else %>
+          <span class="badge bg-warning">😐 Neutra</span>
+        <% end %>
+      </td>
       <td><%= evaluation.evaluation_date.strftime("%d/%m/%Y") %></td>
       <td>
         <%= link_to "Editar", edit_evaluation_path(evaluation), class: "btn btn-warning btn-sm" %>
