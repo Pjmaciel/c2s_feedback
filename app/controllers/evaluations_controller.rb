@@ -4,8 +4,25 @@ class EvaluationsController < ApplicationController
   before_action :authenticate_user!
 
   def index
-    @evaluations = policy_scope(Evaluation)
+    @evaluations = Evaluation.includes(:attendant, :client).order(evaluation_date: :desc)
+
+    # Aplicando filtros
+    @evaluations = @evaluations.where(attendant_id: params[:attendant_id]) if params[:attendant_id].present?
+    @evaluations = @evaluations.where(score: params[:score]) if params[:score].present?
+
+    # Filtro de sentimento ajustado
+    if params[:sentiment].present? && params[:sentiment] != ''
+      @evaluations = @evaluations.where(sentiment: params[:sentiment])
+    end
+
+    # Debug para verificar os parâmetros e a consulta SQL
+    Rails.logger.info "Parâmetros recebidos: #{params}"
+    Rails.logger.info "Consulta SQL gerada: #{@evaluations.to_sql}"
+
+    render :index
   end
+
+
 
   def show
     authorize @evaluation
