@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.1].define(version: 2025_02_08_201853) do
+ActiveRecord::Schema[7.1].define(version: 2025_02_10_125218) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -51,9 +51,11 @@ ActiveRecord::Schema[7.1].define(version: 2025_02_08_201853) do
     t.datetime "evaluation_date", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "sentiment"
     t.index ["attendant_id"], name: "index_evaluations_on_attendant_id"
     t.index ["client_id", "attendant_id", "evaluation_date"], name: "idx_on_client_id_attendant_id_evaluation_date_14449bfc1a"
     t.index ["client_id"], name: "index_evaluations_on_client_id"
+    t.index ["sentiment"], name: "index_evaluations_on_sentiment"
   end
 
   create_table "manager_profiles", force: :cascade do |t|
