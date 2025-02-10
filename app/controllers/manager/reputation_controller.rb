@@ -5,26 +5,29 @@ module Manager
     end
 
     def search
-      company_name = params[:company_name]
+      company_name = params[:company_name]&.strip
 
       if company_name.blank?
         flash[:alert] = "Por favor, informe um nome de empresa."
         redirect_to manager_reputation_index_path and return
       end
 
-      cached_result = fetch_cached_result(company_name)
+      formatted_name = company_name.downcase.gsub(' ', '-')
+
+      cached_result = fetch_cached_result(formatted_name)
 
       if cached_result
         @company_info = JSON.parse(cached_result)
       else
-        # Dispara o Job para buscar os dados de forma assíncrona
-        FetchReputationJob.perform_later(company_name, current_user.id)
-
+        ReclameAquiSearchJob.perform_async(formatted_name, current_user.id)
         @company_info = { status: 'processando' }
-        flash[:notice] = "A pesquisa está em andamento. Atualize a página em alguns minutos."
+        flash[:notice] = "A pesquisa está sendo processada. Aguarde alguns segundos."
       end
 
-      render :index
+      respond_to do |format|
+        format.html { render :index }
+        format.json { render json: @company_info }
+      end
     end
 
     private
@@ -42,7 +45,7 @@ module Manager
           searches << JSON.parse(data) if data
         end
       end
-      searches.sort_by { |s| s['last_updated'] }.reverse
+      searches.sort_by { |s| s['updated_at'] || Time.now }.reverse
     end
   end
 end
