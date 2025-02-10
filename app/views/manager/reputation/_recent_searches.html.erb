@@ -1,0 +1,30 @@
+<% if @recent_searches.present? %>
+  <div class="bg-white rounded-lg shadow overflow-hidden">
+    <div class="px-6 py-4 border-b">
+      <h2 class="text-lg font-semibold">Pesquisas Recentes</h2>
+    </div>
+
+    <div class="divide-y">
+      <% recent_searches.each do |search| %>
+        <div class="p-6">
+          <h3 class="font-medium"><%= search['company_name'] || search['name'] %></h3>
+          <div class="mt-2 grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
+            <div>
+              <span class="text-gray-500">Índice de Solução:</span>
+              <%= number_to_percentage(search['solution_rate'], precision: 1) if search['solution_rate'].present? %>
+            </div>
+            <div>
+              <span class="text-gray-500">Reputação:</span>
+              <%= "#{search['reputation_score']}/10" if search['reputation_score'].present? %>
+            </div>
+            <div>
+              <span class="text-gray-500">Atualizado:</span>
+              <%= time_ago_in_words(Time.parse(search['last_updated'])) if search['last_updated'].present? %> atrás
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+
+<% end %>
