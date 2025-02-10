@@ -30,6 +30,8 @@ gem 'cpf_cnpj', '~> 0.2.1'
 
 # --- Web Scraping ---
 gem 'nokogiri' # HTML and XML parsing
+gem 'selenium-webdriver'
+
 
 # --- Testing ---
 group :test do

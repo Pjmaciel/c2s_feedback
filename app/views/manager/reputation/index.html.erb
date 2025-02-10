@@ -1,0 +1,80 @@
+<div class="container mx-auto px-4 py-8">
+  <div class="flex justify-between items-center mb-6">
+    <h1 class="text-2xl font-bold">Monitoramento de Reputação</h1>
+    <%= link_to 'Voltar ao Dashboard', manager_dashboard_path, class: 'bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded' %>
+  </div>
+
+  <div class="bg-white rounded-lg shadow p-6 mb-8">
+    <%= form_tag search_manager_reputation_index_path, method: :get, class: "space-y-4", data: { controller: "search" } do %>
+      <div>
+        <%= label_tag :company_name, "Nome da Empresa", class: "block text-sm font-medium text-gray-700" %>
+        <%= text_field_tag :company_name, params[:company_name], class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+      <div class="flex items-center space-x-4">
+        <%= submit_tag "Pesquisar", class: "flex-1 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700",
+                       data: { disable_with: "Buscando...", search_target: "submit" } %>
+        <div class="hidden animate-spin text-blue-600" data-search-target="spinner">
+          <svg class="w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <div id="results">
+    <% if @company_info %>
+      <div class="bg-white rounded-lg shadow p-6 mb-8">
+        <% if @company_info[:status] == 'processando' %>
+          <div class="flex items-center justify-center space-x-2 py-8">
+            <div class="animate-spin">
+              <svg class="w-8 h-8 text-blue-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+            </div>
+            <p class="text-lg text-gray-600">Buscando informações...</p>
+          </div>
+
+          <%= javascript_tag do %>
+            setTimeout(function() {
+            location.reload();
+            }, 10000); // Atualiza a cada 10s caso a resposta não chegue pelo WebSocket
+          <% end %>
+
+        <% else %>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Nome da Empresa</h3>
+              <p class="mt-1 text-2xl font-semibold">
+                <%= @company_info["company_name"].presence || "Não encontrado" %>
+              </p>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Índice de Solução</h3>
+              <p class="mt-1 text-2xl font-semibold">
+                <%= @company_info["reviews_count"].presence || "N/A" %>
+              </p>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Nota de Reputação</h3>
+              <p class="mt-1 text-2xl font-semibold">
+                <%= @company_info["rating"].presence || "N/A" %>
+              </p>
+            </div>
+            <div>
+              <h3 class="text-sm font-medium text-gray-500">Status</h3>
+              <p class="mt-1 text-2xl font-semibold text-green-600">
+                Atualizado
+              </p>
+            </div>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= render 'manager/reputation/recent_searches', recent_searches: @recent_searches if @recent_searches.present? %>
+
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<% if @recent_searches.present? %>
+  <div class="bg-white rounded-lg shadow p-6">
+    <h2 class="text-xl font-bold mb-4">Pesquisas Recentes</h2>
+    <div class="grid gap-4">
+      <% @recent_searches.each do |search| %>
+        <div class="border-b pb-4">
+          <div class="flex justify-between items-start">
+            <div>
+              <h3 class="font-medium"><%= search['company_name'] %></h3>
+              <p class="text-gray-600">Avaliação: <%= search['rating'] %></p>
+              <p class="text-gray-600">Índice de Solução: <%= search['reviews_count'] %></p>
+            </div>
+            <div class="text-sm text-gray-500">
+              <%= Time.parse(search['last_updated']).strftime("%d/%m/%Y %H:%M") if search['last_updated'] %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
+<% end %>

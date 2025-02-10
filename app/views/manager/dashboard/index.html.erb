@@ -4,6 +4,14 @@
     <%= link_to manager_reports_path, class: 'bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded' do %>
       <i class="fas fa-chart-bar mr-2"></i> Relatórios
     <% end %>
+
+
+    <%= link_to manager_reputation_index_path,
+                class: "flex items-center px-3 py-2 rounded-md #{current_page?(manager_reputation_index_path) ? 'bg-blue-50 text-blue-700' : 'text-gray-600 hover:bg-gray-50'}" do %>
+      <i class="fas fa-chart-line mr-2"></i>
+      <span>Monitoramento de Reputação</span>
+    <% end %>
+
   </div>
 
   <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
