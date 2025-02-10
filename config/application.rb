@@ -22,5 +22,9 @@ module C2SFeedback
 
     config.active_job.queue_adapter = :sidekiq
 
+    Dotenv.load if Rails.env.development? || Rails.env.test?
+    ENV['GOOGLE_APPLICATION_CREDENTIALS']
+
+
   end
 end

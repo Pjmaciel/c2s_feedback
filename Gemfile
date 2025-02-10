@@ -30,6 +30,12 @@ gem 'cpf_cnpj', '~> 0.2.1'
 
 # --- Web Scraping ---
 gem 'nokogiri' # HTML and XML parsing
+gem 'selenium-webdriver'
+
+# --- API---
+gem 'google-cloud-language'
+
+
 
 # --- Testing ---
 group :test do
@@ -55,3 +61,4 @@ end
 
 gem "importmap-rails", "~> 2.1"
 
+gem 'kaminari'

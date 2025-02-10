@@ -11,6 +11,7 @@ class Evaluation < ApplicationRecord
   validate :evaluation_date_cannot_be_in_future
 
   after_commit :notify_managers, :notify_attendant, on: :create
+  after_create :analyze_sentiment
 
   private
 
@@ -40,5 +41,13 @@ class Evaluation < ApplicationRecord
     return if evaluation_date.present? && evaluation_date <= Time.current
 
     errors.add(:evaluation_date, 'cannot be in the future')
+  end
+
+  def analyze_sentiment
+    sentiment = GoogleSentimentAnalysis.analyze(comment)
+    update_column(:sentiment, sentiment)
+  rescue StandardError => e
+    Rails.logger.error "Erro ao analisar sentimento: #{e.message}"
+    update_column(:sentiment, "neutral")
   end
 end

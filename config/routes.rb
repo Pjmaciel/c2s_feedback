@@ -51,6 +51,8 @@ Rails.application.routes.draw do
   # Sidekiq Web UI (only accessible to Admin in the future)
   mount Sidekiq::Web => '/sidekiq'
 
+  mount ActionCable.server => '/cable'
+
   get 'redoc/index'
   mount Rswag::Ui::Engine => '/swagger'
   mount Rswag::Api::Engine => '/api-docs'
@@ -93,6 +95,13 @@ Rails.application.routes.draw do
     resources :evaluations
     resources :reports, only: [:index, :create]
     resources :attendants
+
+    resources :reputation, only: [:index], controller: 'reputation' do
+      collection do
+        get :search
+        post :search
+      end
+    end
   end
 
 end
