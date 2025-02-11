@@ -7,7 +7,7 @@
 
   <!-- Filtro por Sentimento -->
   <div class="mb-6">
-    <%= form_tag attendant_evaluations_path, method: :get, class: "bg-white rounded-lg shadow p-6" do %>
+    <%= form_tag filter_attendant_evaluations_path, method: :get, class: "bg-white rounded-lg shadow p-6" do %>
       <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
         <div>
           <%= label_tag :sentiment, "Sentimento", class: "block text-sm font-medium text-gray-700 mb-1" %>
@@ -30,50 +30,9 @@
   </div>
 
   <!-- Tabela de Avaliações -->
-  <div class="bg-white rounded-lg shadow overflow-hidden">
-    <table class="min-w-full divide-y divide-gray-200">
-      <thead class="bg-gray-50">
-      <tr>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Cliente</th>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nota</th>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Sentimento</th>
-        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ações</th>
-      </tr>
-      </thead>
-      <tbody class="bg-white divide-y divide-gray-200">
-      <% @evaluations.each do |evaluation| %>
-        <tr>
-          <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-            <%= evaluation.evaluation_date.strftime("%d/%m/%Y") %>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <div class="text-sm font-medium text-gray-900"><%= evaluation.client.name %></div>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
-              <%= evaluation.score >= 7 ? 'bg-green-100 text-green-800' :
-                                             evaluation.score >= 5 ? 'bg-yellow-100 text-yellow-800' :
-                                               'bg-red-100 text-red-800' %>">
-              <%= evaluation.score %>/10
-            </span>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap">
-            <% if evaluation.sentiment == "positive" %>
-              <span class="badge bg-green-500 text-white px-2 py-1 rounded">😊 Positiva</span>
-            <% elsif evaluation.sentiment == "negative" %>
-              <span class="badge bg-red-500 text-white px-2 py-1 rounded">😡 Negativa</span>
-            <% else %>
-              <span class="badge bg-yellow-500 text-white px-2 py-1 rounded">😐 Neutra</span>
-            <% end %>
-          </td>
-          <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-            <%= link_to 'Ver Detalhes', attendant_evaluation_path(evaluation),
-                        class: "text-blue-600 hover:text-blue-900" %>
-          </td>
-        </tr>
-      <% end %>
-      </tbody>
-    </table>
-  </div>
+  <% if @evaluations.any? %>
+    <%= render "attendant/evaluations/table", evaluations: @evaluations %>
+  <% else %>
+    <p class="text-gray-600">Nenhuma avaliação encontrada para os filtros aplicados.</p>
+  <% end %>
 </div>
