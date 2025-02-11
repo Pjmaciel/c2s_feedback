@@ -5,6 +5,40 @@ O **C2S Feedback** é uma API desenvolvida em **Ruby on Rails** para gerenciar a
 
 ---
 
+## 🎬 **📌 Vídeo Explicativo - Fluxo Completo da Solicitação de Avaliação**
+Para entender **exatamente como o sistema funciona**, incluindo a criação de usuários, envio de solicitações, avaliações, notificações e consolidação de notas, **assista ao vídeo abaixo**:
+
+🔗 **[▶ Assista no YouTube](https://youtu.be/hbMVQfk46MY)** 🎥  
+
+Este vídeo demonstra, de forma prática e detalhada, **todo o fluxo do sistema**, desde a criação de um gestor, atendente e cliente, até a contabilização das notas.
+
+⚠ **IMPORTANTE:** Este vídeo é a principal referência para compreender o funcionamento do C2S Feedback.
+
+---
+
+## 📌 **Resumo do Fluxo da Solicitação de Avaliação**
+(Para mais detalhes, assista ao vídeo acima 👆)
+
+1️⃣ **Criação dos Usuários:**  
+   - O **Gestor** cria um **Atendente** e um **Cliente**.  
+   - O **Atendente** é responsável por enviar a solicitação de avaliação.  
+
+2️⃣ **Envio da Solicitação de Avaliação:**  
+   - O **Atendente** finaliza um atendimento e envia um pedido de avaliação ao **Cliente**.  
+   - O **Cliente** recebe um **e-mail** com um link único.  
+
+3️⃣ **Cliente Avalia o Atendimento:**  
+   - O Cliente acessa o link e preenche a avaliação (nota e comentário).  
+   - Ele pode **editar ou excluir** a avaliação dentro de um prazo determinado.  
+
+4️⃣ **Notificações Automáticas:**  
+   - O **Atendente** recebe um e-mail com sua avaliação.  
+   - O **Gestor** recebe um resumo com todas as avaliações.  
+
+5️⃣ **Cálculo e Consolidação das Notas:**  
+   - As notas dos atendentes são armazenadas e podem ser consultadas pelo Gestor.  
+
+
 ## 🚀 Funcionalidades Principais
 
 ✅ **Autenticação de Usuários:** Registro e login com Devise.  
