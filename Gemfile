@@ -42,6 +42,11 @@ group :test do
   gem 'rspec-rails' # Testing framework for Rails
   gem 'factory_bot_rails' # Test data generation
   gem 'faker' # Random test data generator
+  gem 'shoulda-matchers'
+  gem 'database_cleaner-active_record'
+  gem 'warden-rspec-rails'
+  gem 'rails-controller-testing'
+
 end
 
 # --- Documentation ---

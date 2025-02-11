@@ -100,6 +100,10 @@ GEM
     cronex (0.15.0)
       tzinfo
       unicode (>= 0.4.4.5)
+    database_cleaner-active_record (2.2.0)
+      activerecord (>= 5.a)
+      database_cleaner-core (~> 2.0.0)
+    database_cleaner-core (2.0.1)
     date (3.4.1)
     debug (1.10.0)
       irb (~> 1.10)
@@ -327,6 +331,10 @@ GEM
       activesupport (= 7.1.5.1)
       bundler (>= 1.15.0)
       railties (= 7.1.5.1)
+    rails-controller-testing (1.0.5)
+      actionpack (>= 5.0.1.rc1)
+      actionview (>= 5.0.1.rc1)
+      activesupport (>= 5.0.1.rc1)
     rails-dom-testing (2.2.0)
       activesupport (>= 5.0.0)
       minitest
@@ -403,6 +411,8 @@ GEM
       rexml (~> 3.2, >= 3.2.5)
       rubyzip (>= 1.2.2, < 3.0)
       websocket (~> 1.0)
+    shoulda-matchers (6.4.0)
+      activesupport (>= 5.2.0)
     sidekiq (7.3.8)
       base64
       connection_pool (>= 2.3.0)
@@ -435,6 +445,7 @@ GEM
     uri (1.0.2)
     warden (1.2.9)
       rack (>= 2.0.9)
+    warden-rspec-rails (0.3.0)
     websocket (1.2.11)
     websocket-driver (0.7.7)
       base64
@@ -457,6 +468,7 @@ DEPENDENCIES
   annotate
   bootsnap
   cpf_cnpj (~> 0.2.1)
+  database_cleaner-active_record
   debug
   devise
   dotenv-rails
@@ -472,15 +484,18 @@ DEPENDENCIES
   puma (>= 5.0)
   pundit
   rails (~> 7.1.5, >= 7.1.5.1)
+  rails-controller-testing
   rails-erd
   redis (>= 4.0.1)
   redoc-rails
   rspec-rails
   rswag
   selenium-webdriver
+  shoulda-matchers
   sidekiq
   sidekiq-cron
   sprockets-rails
+  warden-rspec-rails
 
 RUBY VERSION
    ruby 3.3.0p0
