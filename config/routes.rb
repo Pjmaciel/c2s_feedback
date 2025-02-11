@@ -86,13 +86,24 @@ Rails.application.routes.draw do
 
   namespace :attendant do
     get '/dashboard', to: 'dashboard#index', as: :dashboard
+
     resources :evaluation_requests
-    resources :evaluations
+
+    resources :evaluations do
+      collection do
+        get 'filter'
+      end
+    end
   end
 
   namespace :manager do
     get 'dashboard', to: 'dashboard#index'
-    resources :evaluations
+
+    resources :evaluations do
+      collection do
+        get 'filter'
+      end
+    end
     resources :reports, only: [:index, :create]
     resources :attendants
 

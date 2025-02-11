@@ -3,4 +3,4 @@
 <p>Uma nova avaliação foi registrada para o atendente <strong><%= @evaluation.attendant.name %></strong>.</p>
 <p style="font-size: 18px; font-weight: bold;">Nota: <%= @evaluation.score %>/10</p>
 <p><strong>Comentário:</strong> <%= @evaluation.comment.presence || "Nenhum comentário adicionado." %></p>
-<p><a href="https://seusistema.com/evaluations/<%= @evaluation.id %>" style="color: blue;">Ver detalhes</a></p>
+<p><a href="http://localhost:3000/evaluations/<%= @evaluation.id %>" style="color: blue;">Ver detalhes</a></p>

@@ -1,4 +1,3 @@
-
 class EvaluationsController < ApplicationController
   before_action :set_evaluation, only: [:show, :edit, :update, :destroy]
   before_action :authenticate_user!
@@ -6,19 +5,21 @@ class EvaluationsController < ApplicationController
   def index
     @evaluations = Evaluation.includes(:attendant, :client).order(evaluation_date: :desc)
 
-    @evaluations = @evaluations.where(attendant_id: params[:attendant_id]) if params[:attendant_id].present?
-    @evaluations = @evaluations.where(score: params[:score]) if params[:score].present?
-
-    if params[:sentiment].present?
-      Rails.logger.info "Aplicando filtro de sentimento: #{params[:sentiment]}"
-      @evaluations = @evaluations.where(sentiment: params[:sentiment])
-    end
+    @evaluations = apply_filters(@evaluations)
 
     render :index
   end
 
+  def filter
+    @evaluations = Evaluation.includes(:attendant, :client).order(evaluation_date: :desc)
 
+    @evaluations = apply_filters(@evaluations)
 
+    respond_to do |format|
+      format.html { render :index }
+      format.json { render json: @evaluations }
+    end
+  end
 
   def show
     authorize @evaluation
@@ -43,27 +44,6 @@ class EvaluationsController < ApplicationController
     end
   end
 
-  def edit
-    authorize @evaluation
-    @attendants = User.where(role: 'attendant')
-  end
-
-  def update
-    authorize @evaluation
-    if @evaluation.update(evaluation_params)
-      redirect_to evaluations_path, notice: 'Avaliação atualizada com sucesso.'
-    else
-      @attendants = User.where(role: 'attendant')
-      render :edit, status: :unprocessable_entity
-    end
-  end
-
-  def destroy
-    authorize @evaluation
-    @evaluation.destroy
-    redirect_to evaluations_path, notice: 'Avaliação excluída com sucesso.'
-  end
-
   private
 
   def set_evaluation
@@ -72,5 +52,13 @@ class EvaluationsController < ApplicationController
 
   def evaluation_params
     params.require(:evaluation).permit(:attendant_id, :score, :comment, :evaluation_date)
+  end
+
+  def apply_filters(evaluations)
+    evaluations = evaluations.where(attendant_id: params[:attendant_id]) if params[:attendant_id].present?
+    evaluations = evaluations.where(score: params[:score]) if params[:score].present?
+    evaluations = evaluations.where(sentiment: params[:sentiment]) if params[:sentiment].present? && params[:sentiment] != ""
+
+    evaluations
   end
 end
