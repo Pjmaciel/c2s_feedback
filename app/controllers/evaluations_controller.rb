@@ -5,17 +5,14 @@ class EvaluationsController < ApplicationController
   def index
     @evaluations = Evaluation.includes(:attendant, :client).order(evaluation_date: :desc)
 
-    # Aplicação dos filtros na index
     @evaluations = apply_filters(@evaluations)
 
     render :index
   end
 
-  # 🔥 Método de filtro separado
   def filter
     @evaluations = Evaluation.includes(:attendant, :client).order(evaluation_date: :desc)
 
-    # Aplicação dos filtros
     @evaluations = apply_filters(@evaluations)
 
     respond_to do |format|
@@ -57,7 +54,6 @@ class EvaluationsController < ApplicationController
     params.require(:evaluation).permit(:attendant_id, :score, :comment, :evaluation_date)
   end
 
-  # 🔥 Método para aplicar os filtros dinamicamente
   def apply_filters(evaluations)
     evaluations = evaluations.where(attendant_id: params[:attendant_id]) if params[:attendant_id].present?
     evaluations = evaluations.where(score: params[:score]) if params[:score].present?

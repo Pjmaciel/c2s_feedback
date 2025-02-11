@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-# frozen_string_literal: true
-
 module Manager
   class EvaluationsController < BaseController
     before_action :set_evaluation, only: [:show]
@@ -15,14 +13,13 @@ module Manager
       authorize @evaluation
     end
 
-    # 🔥 Novo método para processar a filtragem via rota /manager/evaluations/filter
     def filter
       @evaluations = filter_evaluations
       @attendants = User.where(role: 'attendant')
 
       respond_to do |format|
-        format.html { render :index } # Renderiza a mesma view do index
-        format.json { render json: @evaluations } # Retorna JSON se necessário
+        format.html { render :index }
+        format.json { render json: @evaluations }
       end
     end
 
