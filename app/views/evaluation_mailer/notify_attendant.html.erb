@@ -4,3 +4,4 @@
 <p>Nota: <strong><%= @evaluation.score %>/10</strong></p>
 <p>Comentário: <%= @evaluation.comment.presence || "Nenhum comentário adicionado." %></p>
 <p>Acesse o sistema para mais detalhes.</p>
+<p><a href="http://localhost:3000/evaluations/<%= @evaluation.id %>" style="color: blue;">Ver detalhes</a></p>
