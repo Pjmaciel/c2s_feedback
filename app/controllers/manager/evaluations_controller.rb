@@ -13,6 +13,16 @@ module Manager
       authorize @evaluation
     end
 
+    def filter
+      @evaluations = filter_evaluations
+      @attendants = User.where(role: 'attendant')
+
+      respond_to do |format|
+        format.html { render :index }
+        format.json { render json: @evaluations }
+      end
+    end
+
     private
 
     def set_evaluation
@@ -39,6 +49,7 @@ module Manager
       end
 
       evaluations = evaluations.where(score: params[:score]) if params[:score].present?
+      evaluations = evaluations.where(sentiment: params[:sentiment]) if params[:sentiment].present? && params[:sentiment] != ""
 
       evaluations
     end

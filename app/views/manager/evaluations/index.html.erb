@@ -5,61 +5,51 @@
                 class: 'bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded' %>
   </div>
 
-  <div class="mb-8">
-    <%= form_tag manager_evaluations_path, method: :get, class: "bg-white rounded-lg shadow p-6" do %>
-      <div class="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div>
-          <%= label_tag :attendant_id, "Atendente", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= select_tag :attendant_id,
-                         options_from_collection_for_select(@attendants, :id, :name, params[:attendant_id]),
-                         prompt: "Todos",
-                         class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-        </div>
-
-        <div>
-          <%= label_tag :date_range, "Período", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= select_tag :date_range,
-                         options_for_select([
-                                              ['Hoje', 'today'],
-                                              ['Esta Semana', 'week'],
-                                              ['Este Mês', 'month'],
-                                              ['Este Ano', 'year']
-                                            ], params[:date_range]),
-                         prompt: "Todo período",
-                         class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-        </div>
-
-        <div>
-          <%= label_tag :score, "Nota", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= select_tag :score,
-                         options_for_select((0..10).map { |n| [n.to_s, n] }, params[:score]),
-                         prompt: "Todas",
-                         class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-        </div>
-
-        <div>
-          <%= label_tag :sentiment, "Sentimento", class: "block text-sm font-medium text-gray-700 mb-1" %>
-          <%= select_tag :sentiment,
-                          options_for_select([
-                                               ['Todos', ''],
-                                               ['Positivo', 'positive'],
-                                               ['Neutro', 'neutral'],
-                                               ['Negativo', 'negative']
-                                             ], params[:sentiment]),
-                          class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
-        </div>
-
-        <div class="flex items-end">
-          <%= submit_tag "Filtrar",
-                         class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
-        </div>
+  <!-- Formulário de Filtros -->
+  <%= form_tag filter_manager_evaluations_path, method: :get, class: "bg-white rounded-lg shadow p-6" do %><div class="grid grid-cols-1 md:grid-cols-5 gap-4">
+      <!-- Filtro de Atendente -->
+      <div>
+        <%= label_tag :attendant_id, "Atendente", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= select_tag :attendant_id,
+                       options_from_collection_for_select(@attendants, :id, :name, params[:attendant_id]),
+                       prompt: "Todos",
+                       class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
       </div>
-    <% end %>
-  </div>
 
+      <!-- Filtro de Nota -->
+      <div>
+        <%= label_tag :score, "Nota", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= select_tag :score,
+                       options_for_select((0..10).map { |n| [n.to_s, n] }, params[:score]),
+                       prompt: "Todas",
+                       class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+
+      <!-- Filtro de Sentimento -->
+      <div>
+        <%= label_tag :sentiment, "Sentimento", class: "block text-sm font-medium text-gray-700 mb-1" %>
+        <%= select_tag :sentiment,
+                       options_for_select([
+                                            ['Todos', ''],
+                                            ['Positivo', 'positive'],
+                                            ['Neutro', 'neutral'],
+                                            ['Negativo', 'negative']
+                                          ], params[:sentiment]),
+                       class: "block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500" %>
+      </div>
+
+      <!-- Botão de Filtrar -->
+      <div class="flex items-end">
+        <%= submit_tag "Filtrar",
+                       class: "w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      </div>
+    </div>
+  <% end %>
+
+  <!-- Tabela de Avaliações -->
   <% if @evaluations.any? %>
     <%= render "manager/evaluations/table", evaluations: @evaluations %>
-<% else %>
+  <% else %>
     <p class="text-gray-600">Nenhuma avaliação encontrada para os filtros aplicados.</p>
   <% end %>
 </div>
