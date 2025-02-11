@@ -1,48 +1,21 @@
-# syntax = docker/dockerfile:1
+# Usando a versão do Ruby compatível com seu projeto
+FROM ruby:3.3.0
 
-# Use Ruby 3.3.0-slim (melhor para Docker)
-FROM ruby:3.3.0-slim as base
+# Definindo diretório de trabalho dentro do container
+WORKDIR /app
 
-# Set working directory
-WORKDIR /rails
+# Instalando dependências do sistema
+RUN apt-get update -qq && apt-get install -y nodejs yarn postgresql-client
 
-# Set production environment
-ENV RAILS_ENV="production" \
-    BUNDLE_DEPLOYMENT="1" \
-    BUNDLE_PATH="/usr/local/bundle" \
-    BUNDLE_WITHOUT="development"
-
-# Install essential system packages
-RUN apt-get update -qq && \
-    apt-get install --no-install-recommends -y \
-    build-essential git libpq-dev libvips pkg-config \
-    ruby-dev make g++ gcc postgresql-client && \
-    rm -rf /var/lib/apt/lists /var/cache/apt/archives/*
-
-# Install Bundler
-RUN gem install bundler
-
-# Copy Gemfile and install dependencies
+# Copiando arquivos necessários para instalação de dependências
 COPY Gemfile Gemfile.lock ./
-RUN bundle install --jobs 5 --retry 5 && \
-    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
+RUN gem install bundler && bundle install --jobs 4 --retry 3
 
-# Copy application code
+# Copiando o restante da aplicação
 COPY . .
 
-# Precompile bootsnap code for faster boot times
-RUN bundle exec bootsnap precompile app/ lib/
-
-# Ensure the 'rails' user has ownership of necessary directories
-RUN useradd rails --create-home --shell /bin/bash && \
-    chown -R rails:rails /usr/local/bundle /rails /rails/tmp /rails/log /rails/storage
-
-USER rails:rails
-
-# Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
-
-# Start the server by default, this can be overwritten at runtime
+# Expondo a porta padrão do Rails
 EXPOSE 3000
-CMD ["./bin/rails", "server"]
+
+# Comando para iniciar o servidor Rails
+CMD ["bash", "-c", "rm -f tmp/pids/server.pid && bundle exec rails server -b 0.0.0.0"]

@@ -12,11 +12,11 @@ services:
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
     ports:
-      - "5434:5432"
+      - "5433:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: [ "CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}" ]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER} -d ${POSTGRES_DB}"]
       interval: 10s
       retries: 5
       timeout: 5s
@@ -45,11 +45,10 @@ services:
     ports:
       - "6380:6379"
     healthcheck:
-      test: [ "CMD", "redis-cli", "ping" ]
+      test: ["CMD", "redis-cli", "ping"]
       interval: 5s
       retries: 5
       timeout: 3s
-
 
   sidekiq:
     build: .
@@ -64,10 +63,13 @@ services:
     env_file:
       - .env
     environment:
+      RAILS_ENV: development
       REDIS_URL: redis://c2s_feedback_redis:6379/0
+      DATABASE_URL: "postgres://postgres:postgres@postgres:5432/c2s_feedback_development" # Confirme que esta URL está correta
     volumes:
       - .:/app
     working_dir: /app
+
 
   web:
     build: .
@@ -85,9 +87,9 @@ services:
       RAILS_ENV: development
       REDIS_URL: redis://c2s_feedback_redis:6379/0
       DATABASE_URL: "postgres://postgres:postgres@postgres:5432/c2s_feedback_development"
+      GOOGLE_APPLICATION_CREDENTIALS: ${GOOGLE_APPLICATION_CREDENTIALS}
     volumes:
       - .:/app
-      - ~/.ssh:/root/.ssh
     working_dir: /app
     ports:
       - "3000:3000"
